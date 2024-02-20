@@ -1,3 +1,14 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: ""
+labels: bug
+assignees: ''
+
+---
+
+<!--- Provide a general summary of the issue in the Title above -->
+
 ## Current behavior
 <!--- What is actually happening -->
 

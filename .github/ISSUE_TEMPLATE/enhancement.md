@@ -1,3 +1,12 @@
+---
+name: Enhancement
+about: Enhancement with goals and optional tasks
+title: ""
+labels: enhancement
+assignees: ''
+
+---
+
 ## Description
 <!-- description about what shall be done -->
 
