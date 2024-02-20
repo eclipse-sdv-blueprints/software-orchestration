@@ -1,0 +1,31 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/rust
+{
+    "name": "Ankaios Software Orchestration Blueprint dev container",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+   "mounts": [],
+   "runArgs": [
+	"--privileged"
+   ],
+   "appPort": ["25551:25551"],
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+			},
+			
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"eamodio.gitlens",
+				"redhat.vscode-yaml"
+				// Extend IDs of extensions here for custom dev environment...
+			]
+		}
+	},
+   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/blueprint/,type=bind",
+   "workspaceFolder": "/workspaces/blueprint/"
+}
