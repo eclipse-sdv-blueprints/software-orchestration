@@ -24,6 +24,8 @@ run_ankaios() {
   echo "Starting Ankaios agent agent_A"
   ank-agent --name agent_A --server-url ${ANKAIOS_SERVER_URL} > ${ANKAIOS_LOG_DIR}/ankaios-agent_A.log 2>&1 &
 
+  echo "For graceful shutdown execute 'shutdown_blueprint.sh'. This prevents dangling services."
+
   # Wait for any process to exit
   wait -n
 
