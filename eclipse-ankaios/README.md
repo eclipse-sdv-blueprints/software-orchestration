@@ -71,7 +71,7 @@ Afterwards, open a new terminal inside the devcontainer in VSCode.
 Navigate to the subfolder containing this README file and run the following command to build the devcontainer image:
 
 ```shell
-docker build -t custom-ankaios-dev:0.1 --target dev -f .devcontainer/Dockerfile .
+docker build -t ankaios-blueprint:0.1 -f .devcontainer/Dockerfile .
 ```
 
 Todo! Fix mountpoints, when new folder structure of Microsoft is available..
@@ -79,7 +79,7 @@ Todo! Fix mountpoints, when new folder structure of Microsoft is available..
 Start the devcontainer with the required mount points:
 
 ```shell
-docker run -it --privileged --name custom_ankaios_dev -v <absolute/path/to>/blueprint/eclipse-ankaios:/workspaces/app -v <absolute/path/to>/blueprint/in-vehicle-stack:/workspaces/app/in-vehicle-stack -p 25551:25551 --workdir /workspaces/app custom-ankaios-dev:0.1 /bin/bash
+docker run -it --privileged -p 25551:25551 --name ankaios_blueprint --workdir /workspaces/blueprint -v /<absolute-path-to>/software-orchestration/eclipse-ankaios:/workspaces/blueprint ankaios-blueprint:0.1
 ```
 
 ## Startup check before development
@@ -114,28 +114,7 @@ The output looks similar to the following:
  service_discovery          agent_A   podman    Running
 ```
 
-5. Only for the **Smart Trailer scenario**, do the following extra steps:
-    - Inside the devcontainer, run the script `start_trailer_applications_ankaios.sh`:
-        ```shell
-        start_trailer_applications_ankaios.sh
-        ```
-    - In another terminal window inside the devcontainer, add the following workload by using the Ankaios CLI to simulate the Smart Trailer connected signal:
-        ```shell
-        ank run workload trailer_connected_provider --runtime podman --config $'image: sdvblueprint.azurecr.io/sdvblueprint/in-vehicle-stack/trailer_connected_provider:0.1.0\ncommandOptions: ["--network", "host", "--name", "trailer_connected_provider"]' --agent agent_A
-        ```
-    - Verify the output of the terminal window of the `start_trailer_applications_ankaios.sh` script. The output should look like the following:
-        ```shell
-        Trailer is connected! Starting workloads to manage it
-        Called Ankaios to start the Trailer Properties Digital Twin Provider and Smart Trailer Application
-        Check Ankaios status with 'ank get workloads'
-        ```
-    - Check the execution states of the newly added workloads by using the Ankaios CLI.
-        ```shell
-        ank get workloads
-        ```
-    - Run `podman logs -f smart_trailer_application` to check the sample data output of the Smart Trailer App. Feel free to check the logs of the other workloads too.
-
-6. Stop Ankaios and clean up all workloads by running:
+5. Stop Ankaios and clean up all workloads by running:
 
 ```shell
 shutdown_blueprint.sh
