@@ -44,10 +44,3 @@ workloads:
     runtimeConfig: |
       image: ghcr.io/ladatz/sdvblueprint/eclipse-freyja/local-with-ibeji:0.1.0
       commandOptions: ["--network", "host", "--name", "local-cloud-sync"]
-# this image does not work anymore error msg on startup => Error: statfs /etc/freyja/config: no such file or directory
-#  cloud_connector:
-#    runtime: podman
-#    agent: agent_A
-#    runtimeConfig: |
-#      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-freyja/azure-cloud-connector:0.1.0
-#      commandOptions: ["--network", "host", "--name", "cloud-connector", "--mount", "type=bind,src=/etc/freyja/config,dst=/mnt/config,ro=true"]
