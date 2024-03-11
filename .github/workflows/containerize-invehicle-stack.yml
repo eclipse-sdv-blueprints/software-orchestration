@@ -34,7 +34,7 @@ jobs:
           file: ./Dockerfile_integrated.amd64
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64
 
       - name: Build and push Docker image for Ibeji Digital Twin Service (arm64)
         uses: docker/build-push-action@v2
@@ -43,10 +43,10 @@ jobs:
           file: ./Dockerfile_integrated.arm64
           platforms: linux/arm64
           push: true
-          tags: ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
 
       - name: Create and push multi-architecture Docker image
         run: |
-          docker buildx imagetools create -t ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0 ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64 ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
-          docker push ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0
+          docker buildx imagetools create -t ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0 ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64 ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
+          docker push ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0
           
