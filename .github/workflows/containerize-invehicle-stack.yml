@@ -49,4 +49,4 @@ jobs:
         run: |
           docker buildx imagetools create -t ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0 ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64 ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
           docker push ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0
-          
+
