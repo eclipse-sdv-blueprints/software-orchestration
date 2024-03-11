@@ -1,0 +1,34 @@
+name: Containerize In-Vehicle Stack
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Chariott
+        uses: actions/checkout@v2
+        with:
+          repository: eclipse-chariott/chariott
+
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image for Chariott Service Discovery
+        run: |
+          docker build -t ghcr.io/ladatz/sdvblueprint/eclipse-chariott/service-discovery:0.2.0.5-amd64 -f Dockerfile.service_discovery.amd64 .
+          docker build -t ghcr.io/ladatz/sdvblueprint/eclipse-chariott/service-discovery:0.2.0.5-arm64 -f Dockerfile.service_discovery.arm64 .
+          docker push ghcr.io/ladatz/sdvblueprint/eclipse-chariott/service-discovery:0.2.0.5-amd64
+          docker push ghcr.io/ladatz/sdvblueprint/eclipse-chariott/service-discovery:0.2.0.5-arm64
+          docekr buildx imagetools create -t ghcr.io/ladatz/sdvblueprint/eclipse-chariott/service-discovery:0.2.0.5 docker push ghcr.io/ladatz/sdvblueprint/eclipse-chariott/service-discovery:0.2.0.5-amd64 ghcr.io/ladatz/sdvblueprint/eclipse-chariott/service-discovery:0.2.0.5-arm64
