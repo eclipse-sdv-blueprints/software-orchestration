@@ -34,3 +34,10 @@ jobs:
             platforms: linux/amd64,linux/arm64
             push: true
             tags: ghcr.io/ladatz/software-orchestration/eclipse-chariott/service-discovery:0.2.0
+
+      - name: Make Image Public
+        run: |
+          curl -X PUT \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -d '{"visibility": "public"}' \
+          "https://api.github.com/repos/ladatz/software-orchestration/packages/container/eclipse-chariott/service-discovery/visibility"
