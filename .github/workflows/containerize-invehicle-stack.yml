@@ -9,7 +9,10 @@ jobs:
 
     steps:
       - name: Set up Docker buildx
+        id: buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          install: true
 
       - name: Login to the Container registry
         uses: docker/login-action@v3
@@ -27,7 +30,7 @@ jobs:
       - name: Build and push Docker image for Ibeji Digital Twin Service
         run: |
           docker build -t ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64 -f Dockerfile_integrated.amd64 .
-          docker build -t ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64 -f Dockerfile_integrated.arm64 .
+          docker buildx build --platform linux/arm64 -t ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64 -f Dockerfile_integrated.arm64 .
           docker push ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64
           docker push ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
           docekr buildx imagetools create -t ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0 ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64 ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
