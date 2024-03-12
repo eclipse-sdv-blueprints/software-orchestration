@@ -26,7 +26,7 @@ jobs:
       - name: Checkout Ibeji
         uses: actions/checkout@v2
         with:
-          repository: https://github.com/ladatz/ibeji
+          repository: ladatz/ibeji
           ref: ladatz/multi
           submodules: recursive
 
