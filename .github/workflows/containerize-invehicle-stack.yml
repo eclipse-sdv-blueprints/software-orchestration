@@ -23,6 +23,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout Chariott
+        uses: actions/checkout@v2
+        with:
+          repository: eclipse-chariott/chariott
+  
+      - name: Build and push multi-platform Docker image for Chariott Service Discovery
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.service_discovery.multi
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-chariott/service-discovery:0.2.0
+
       - name: Checkout Ibeji
         uses: actions/checkout@v2
         with:
@@ -52,7 +66,7 @@ jobs:
           file: Dockerfile.mosquitto.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/mosquitto:0.1.1
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-mosquitto/mqtt-broker-agemo-config:0.1.1
 
       - name: Build and push multi-platform Docker image for Agemo Pub-Sub Service
         uses: docker/build-push-action@v5
@@ -62,3 +76,22 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/pub-sub-service:0.1.1
+
+      - name: Checkout Freyja Apps Repository
+        uses: actions/checkout@v2
+        with:
+          repository: ladatz/ibeji-example-applications
+          ref: ladatz/multi
+          submodules: recursive
+  
+      - name: Build and push multi-platform Docker image for Freyja Application
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.freyja_apps.multi
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-freyja/local-with-ibeji:0.1.0
+          args: |
+            APP_NAME=freyja-ibeji-integration-app
+            CONFIG_PATH=.freyja/smart_trailer/config
