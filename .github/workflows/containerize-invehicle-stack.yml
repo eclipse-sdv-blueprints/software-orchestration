@@ -42,7 +42,7 @@ jobs:
       - name: Checkout Agemo
         uses: actions/checkout@v2
         with:
-          repository: https://github.com/eclipse-chariott/Agemo
+          repository: eclipse-chariott/Agemo
           submodules: recursive
 
       - name: Build and push multi-platform Docker image for Mosquitto image with Agemo config
@@ -61,4 +61,4 @@ jobs:
           file: Dockerfile_integrated.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/pub-sub-service/:0.1.1
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/pub-sub-service:0.1.1
