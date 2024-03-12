@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: MIT
+name: Containerize In-Vehicle Stack - Agemo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+      - name: Set up Docker buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+
+      - name: Login to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Agemo
+        uses: actions/checkout@v2
+        with:
+          repository: eclipse-chariott/Agemo
+          submodules: recursive
+
+      - name: Build and push multi-platform Docker image for Mosquitto image with Agemo config
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.mosquitto.multi
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-mosquitto/mqtt-broker-agemo-config:0.1.1
+
+      - name: Build and push multi-platform Docker image for Agemo Pub-Sub Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile_integrated.multi
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/pub-sub-service:0.1.1
