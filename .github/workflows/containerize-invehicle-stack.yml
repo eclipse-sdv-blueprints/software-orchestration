@@ -6,6 +6,8 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
 
     steps:
       - name: Set up Docker buildx
@@ -24,29 +26,39 @@ jobs:
       - name: Checkout Ibeji
         uses: actions/checkout@v2
         with:
-          repository: eclipse-ibeji/ibeji
+          repository: https://github.com/ladatz/ibeji
+          ref: ladatz/multi
           submodules: recursive
 
-      - name: Build and push Docker image for Ibeji Digital Twin Service (amd64)
-        uses: docker/build-push-action@v2
+      - name: Build and push multi-platform Docker image for Ibeji In-vehicle Digital Twin
+        uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile_integrated.amd64
-          platforms: linux/amd64
+          file: Dockerfile_integrated.multi
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin/:0.1.0
 
-      - name: Build and push Docker image for Ibeji Digital Twin Service (arm64)
-        uses: docker/build-push-action@v2
+      - name: Checkout Agemo
+        uses: actions/checkout@v2
+        with:
+          repository: https://github.com/eclipse-chariott/Agemo
+          submodules: recursive
+
+      - name: Build and push multi-platform Docker image for Mosquitto image with Agemo config
+        uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile_integrated.arm64
-          platforms: linux/arm64
+          file: Dockerfile.mosquitto.multi
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/mosquitto/:0.1.1
 
-      - name: Create and push multi-architecture Docker image
-        run: |
-          docker buildx imagetools create -t ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0 ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-amd64 ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0-arm64
-          docker push ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0
-
+      - name: Build and push multi-platform Docker image for Agemo Pub-Sub Service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile_integrated.multi
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/pub-sub-service/:0.1.1
