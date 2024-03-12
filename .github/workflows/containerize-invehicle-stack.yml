@@ -37,7 +37,7 @@ jobs:
           file: Dockerfile_integrated.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin/:0.1.0
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0
 
       - name: Checkout Agemo
         uses: actions/checkout@v2
@@ -52,7 +52,7 @@ jobs:
           file: Dockerfile.mosquitto.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/mosquitto/:0.1.1
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-agemo/mosquitto:0.1.1
 
       - name: Build and push multi-platform Docker image for Agemo Pub-Sub Service
         uses: docker/build-push-action@v5
