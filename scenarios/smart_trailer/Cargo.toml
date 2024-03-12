@@ -1,0 +1,34 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+# SPDX-License-Identifier: MIT
+
+[workspace]
+# The default resolver for workspaces is different than for regular packages, so use v2 to avoid warnings
+resolver = "2"
+
+members = [
+  # interfaces required for apps to communicate with the in-vehicle stack
+  "proto_build",
+
+  # Applications which make up the smart trailer scenario
+  "applications/smart_trailer_application",
+  "digital_twin_providers/common",
+  "digital_twin_providers/trailer_connected_provider",
+  "digital_twin_providers/trailer_properties_provider",
+]
+
+[workspace.dependencies]
+env_logger= "0.10.0"
+log = "0.4.20"
+paho-mqtt = "0.12"
+parking_lot = "0.12.1"
+prost = "0.12.1"
+serde = "1.0.190"
+serde_derive = "1.0.163"
+serde_json = "^1.0"
+strum = "0.25"
+strum_macros = "0.25.1"
+tokio = "1.29.1"
+tonic = "0.11.0"
+tonic-build = "0.10.2"
+uuid = "1.2.2"

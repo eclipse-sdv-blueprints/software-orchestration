@@ -1,0 +1,10 @@
+[package]
+name = "digital_twin_providers_common"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+invehicle-stack-interfaces = { path = "../../proto_build" }
+log =  { workspace = true }
+tonic =  { workspace = true }

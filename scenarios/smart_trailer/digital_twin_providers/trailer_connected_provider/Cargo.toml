@@ -1,0 +1,18 @@
+[package]
+name = "trailer_connected_provider"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+digital-twin-model = { path = "../../digital-twin-model" }
+digital_twin_providers_common = { path = "../common" }
+env_logger = { workspace = true }
+invehicle-stack-interfaces = { path = "../../proto_build" }
+log = { workspace = true }
+serde = { workspace = true }
+serde_derive = { workspace = true }
+serde_json = { workspace = true }
+smart_trailer_interfaces = { path = "./proto_build" }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "signal"] }
+tonic = { workspace = true }
