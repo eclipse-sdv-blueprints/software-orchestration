@@ -37,4 +37,4 @@ jobs:
           file: Dockerfile.service_discovery.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/ladatz/software-orchestration/eclipse-chariott/service-discovery:0.2.1
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:0.2.1
