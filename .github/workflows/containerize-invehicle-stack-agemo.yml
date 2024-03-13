@@ -29,6 +29,7 @@ jobs:
         with:
           repository: eclipse-chariott/Agemo
           submodules: recursive
+          ref: devkelley/add_multi_platform_dockerfile
 
       - name: Build and push multi-platform Docker image for Mosquitto image with Agemo config
         uses: docker/build-push-action@v5
