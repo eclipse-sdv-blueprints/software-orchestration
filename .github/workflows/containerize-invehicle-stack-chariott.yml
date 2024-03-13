@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: eclipse-chariott/chariott
+          ref: 0.2.1
   
       - name: Build and push multi-platform Docker image for Chariott Service Discovery
         uses: docker/build-push-action@v5
@@ -36,4 +37,4 @@ jobs:
           file: Dockerfile.service_discovery.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:0.2.0
+          tags: ghcr.io/ladatz/software-orchestration/eclipse-chariott/service-discovery:0.2.1
