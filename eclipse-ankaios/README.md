@@ -62,6 +62,8 @@ Open the subfolder containing this README file in VSCode:
 code .
 ```
 
+__Note:__ If you have not installed and enabled [docker buildx](https://github.com/docker/buildx) you need to specify the `TARGETARCH` manually by providing it as build argument inside the `.devcontainer/devcontainer.json`, e.g.: --build-arg TARGETARCH=amd64.
+
 VSCode detects automatically that a `.devcontainer` folder exists inside this subfolder.
 Please confirm the dialog to reopen VSCode inside the devcontainer.
 Afterwards, open a new terminal inside the devcontainer in VSCode.
@@ -71,38 +73,33 @@ Afterwards, open a new terminal inside the devcontainer in VSCode.
 Navigate to the subfolder containing this README file and run the following command to build the devcontainer image:
 
 ```shell
-docker build -t ankaios-blueprint:0.1 -f .devcontainer/Dockerfile .
+docker build -t ankaios-orchestration:0.1 -f .devcontainer/Dockerfile .
 ```
 
-Todo! Fix mountpoints, when new folder structure of Microsoft is available..
+__Note:__ If you have not installed and enabled [docker buildx](https://github.com/docker/buildx) you need to specify the `TARGETARCH` manually by providing it as build argument, e.g.: --build-arg TARGETARCH=amd64.
 
 Start the devcontainer with the required mount points:
 
 ```shell
-docker run -it --privileged -p 25551:25551 --name ankaios_blueprint --workdir /workspaces/blueprint -v /<absolute-path-to>/software-orchestration/eclipse-ankaios:/workspaces/blueprint ankaios-blueprint:0.1
+docker run -it --privileged -p 25551:25551 --name ankaios_orchestration --workdir /workspaces/software-orchestration -v /<absolute-path-to>/software-orchestration/eclipse-ankaios:/workspaces/software-orchestration ankaios-orchestration:0.1
 ```
 
 ## Startup check before development
 
 Before starting active development we recommend you start once Ankaios with the current startup config [startupState.yaml](./config/startupState.yaml) and sample applications.
 
-1. Log in into the Microsoft container registry
-```shell
-podman login sdvblueprint.azurecr.io
-```
-
-2. Start Ankaios with all workloads inside the startup config:
+1. Start Ankaios with all workloads inside the startup config:
 ```shell
 run_blueprint.sh
 ```
 
-3. Next, use the Ankaios CLI to verify that all initial workloads are up and running:
+2. Next, use the Ankaios CLI to verify that all initial workloads are up and running:
 
 ```shell
 ank get workloads
 ```
 
-4. Verify that all initial workloads inside the startup config have execution state "Running".
+3. Verify that all initial workloads inside the startup config have execution state "Running".
 
 The output looks similar to the following:
 ```shell
@@ -114,7 +111,7 @@ The output looks similar to the following:
  service_discovery          agent_A   podman    Running
 ```
 
-5. Stop Ankaios and clean up all workloads by running:
+4. Stop Ankaios and clean up all workloads by running:
 
 ```shell
 shutdown_blueprint.sh
