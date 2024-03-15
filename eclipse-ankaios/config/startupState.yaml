@@ -6,7 +6,7 @@ workloads:
       - key: project
         value: chariott
     runtimeConfig: |
-      image: ghcr.io/ladatz/sdvblueprint/eclipse-chariott/service-discovery:0.2.0
+      image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:0.2.1
       commandOptions: ["--network", "host", "--name", "service_discovery"]
   mqtt_broker:
     runtime: podman
