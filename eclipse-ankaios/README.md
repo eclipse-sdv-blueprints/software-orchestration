@@ -4,7 +4,7 @@
 **Architectural Overview**
 
 
-![Smart trailer blueprint](../docs/diagrams/ankaios.png)
+![Smart trailer blueprint](doc/ankaios.png)
 
 The container is designed to have an immediately running environment. Once triggered, all workloads are initially started and sample data is exchanged between them.
 
