@@ -38,7 +38,7 @@ jobs:
           file: Dockerfile.freyja_apps.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/ladatz/software-orchestration/eclipse-freyja/local-with-ibeji:0.1.0
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-freyja/local-with-ibeji:0.1.0
           build-args: |
             APP_NAME=freyja-ibeji-integration-app
             CONFIG_PATH=.freyja/smart_trailer/config
