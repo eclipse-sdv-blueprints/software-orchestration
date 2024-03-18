@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-name: Containerize In-Vehicle Stack - Chariott
+name: Containerize In-Vehicle Stack - Ibeji
 
 on:
   workflow_dispatch:
@@ -25,17 +25,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout Chariott
+      - name: Checkout Ibeji
         uses: actions/checkout@v2
         with:
-          repository: eclipse-chariott/chariott
-          ref: 0.2.1
-  
-      - name: Build and push multi-platform Docker image for Chariott Service Discovery
+          repository: eclipse-ibeji/ibeji
+          ref: 0.1.1
+          submodules: recursive
+
+      - name: Build and push multi-platform Docker image for Ibeji In-vehicle Digital Twin
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile.service_discovery.multi
+          file: Dockerfile_integrated.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:0.2.1
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.1
