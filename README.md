@@ -3,7 +3,7 @@
 The **Software Orchestration Blueprint** showcases how an example in-vehicle software architecture with connectivity to the cloud can help integrators and developers manage complex services and applications. It enables advanced scenarios like workload orchestration, scheduling, placement and resilience. The abstraction layers provided by the blueprint aim to simplify and enhance the user experience. These include discovery and consumption of resources and services, support for a common vehicle model to be used across vehicles, dynamic topic management for publish and subscribe of vehicle signals, and synchronization of signals to a cloud digital twin.
 
 ## Sample Use Case
-The blueprint will come with a sample use case. The system detects that a smart trailer is being connected to the car. A signal is raised to the orchestrator that a smart trailer provider and application is required to manage the smart trailer and adjust body functions and powertrain accordingly and ensure a smooth trip. There are safety and security implications with the orchestration of this use case and that will be addressed in a future iteration.
+The blueprint will come with a sample use case. The system detects that a smart trailer is being connected to the car. A signal is raised to the orchestrator that a smart trailer provider and application is required to manage the smart trailer and adjust body functions and powertrain accordingly and ensure a smooth trip. In line with the characteristic features of software orchestrators, the two applications are then started dynamically once the smart trailer has been connected. There are safety and security implications with the orchestration of this use case and that will be addressed in a future iteration.
 
 ## Architecture
 
