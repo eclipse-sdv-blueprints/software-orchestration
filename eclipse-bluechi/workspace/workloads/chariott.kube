@@ -1,0 +1,20 @@
+# /********************************************************************************
+# * Copyright (c) 2024 Leonardo Rossetti <lrossett@redhat.com>
+# *
+# * This program and the accompanying materials are made available under the 2
+# * terms of the Apache License 2.0 which is available at
+# * https://www.apache.org/licenses/LICENSE-2.0.txt.
+# *
+# * SPDX-License-Identifier: Apache-2.0
+# *
+# * Contributors: 1
+# *   Leonardo Rossetti - file creation
+# ********************************************************************************/
+
+# https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+[Kube]
+Yaml=chariott.yml
+
+# Commented to disable the service to automatically start
+# [Install]
+# WantedBy=default.target
