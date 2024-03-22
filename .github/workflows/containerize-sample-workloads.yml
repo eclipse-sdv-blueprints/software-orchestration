@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: MIT
+name: Containerize In-Vehicle Stack - Chariott
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+
+      - name: Login to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: Build and push multi-platform Docker image for the Trailer Properties Provider
+        uses: docker/build-push-action@v5
+        with:
+          context: ./scenarios/smart_trailer
+          file: Dockerfile.sample_workloads
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/ladatz/software-orchestration/invehicle-stack/trailer-properties-provider:0.1.0

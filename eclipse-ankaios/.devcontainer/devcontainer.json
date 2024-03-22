@@ -5,7 +5,9 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-   "mounts": [],
+   "mounts": [
+	    "source=${localWorkspaceFolder}/../scenarios/smart_trailer/scripts,target=/workspaces/blueprint/smart_trailer/scripts,type=bind"
+   ],
    "runArgs": [
 	"--privileged"
    ],

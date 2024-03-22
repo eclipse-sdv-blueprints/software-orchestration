@@ -40,7 +40,7 @@ BODY='{"id":"dtmi:sdv:Trailer:IsTrailerConnected;1"}'
 PROTO_URL="https://github.com/eclipse-ibeji/ibeji/releases/download/0.1.1/invehicle_digital_twin.proto"
 PROTO_PATH="${SCRIPT_DIR}"
 PROTO="invehicle_digital_twin.proto"
-curl -L "${PROTO_URL}" -o "${PROTO}"
+curl -L "${PROTO_URL}" -o "${PROTO_PATH}/${PROTO}"
 
 EXPECTED_PROTOCOL="grpc"
 EXPECTED_OPERATION="get"
@@ -78,39 +78,23 @@ do
     do
       if [[ $(echo $OPERATION | tr '[:upper:]' '[:lower:]') == $EXPECTED_OPERATION ]]
       then
-        URI=$(echo $ENDPOINT | jq -r '.uri')
-        CONTEXT=$(echo $ENDPOINT | jq -r '.context')
+        echo "Trailer is connected! Starting workloads to manage it"
 
-        # We need the authority for the server, so remove the http://
-        get_server=$(echo "$URI" | sed 's/http:\/\///g')
+        # Start up the other workloads using podman
+        CFG_PROVIDER=$'image: ghcr.io/ladatz/sdvblueprint/trailer_properties_provider:0.1.0\ncommandOptions: ["--network", "host", "--name", "trailer_properties_provider"]'
+        CFG_APP=$'image: ghcr.io/ladatz/sdvblueprint/smart_trailer_application:0.1.0\ncommandOptions: ["--network", "host", "--name", "smart_trailer_application"]'
 
-        # Call get for the "trailer connected provider" to check if it's connected
-        GET_PROTO_PATH="${SCRIPT_DIR}/../interfaces"
-        GET_PROTO="digital_twin_get_provider.proto"
-        GET_SERVER=$get_server
-        GET_SERVICE="digital_twin_get_provider.DigitalTwinGetProvider"
-        GET_METHOD="Get"
-        GET_OUTPUT=$(grpcurl -import-path $GET_PROTO_PATH -proto $GET_PROTO -plaintext $GET_SERVER $GET_SERVICE/$GET_METHOD 2>&1)
+        ank run workload trailer_properties_provider --runtime podman --config "$CFG_PROVIDER" --agent agent_A
+        ank run workload smart_trailer_application --runtime podman --config "$CFG_APP" --agent agent_A
 
-        # For now, this always returns true, this can be expanded to simulate connecting and disconnecting the trailer
-        if [[ $(echo $GET_OUTPUT | jq -r '.propertyValue') ]]
-        then
-          echo "Trailer is connected! Starting workloads to manage it"
-
-          # Start up the other workloads using podman
-          CFG_PROVIDER=$'image: sdvblueprint.azurecr.io/sdvblueprint/in-vehicle-stack/trailer_properties_provider:0.1.0\ncommandOptions: ["--network", "host", "--name", "trailer_properties_provider"]'
-          CFG_APP=$'image: sdvblueprint.azurecr.io/sdvblueprint/in-vehicle-stack/smart_trailer_application:0.1.0\ncommandOptions: ["--network", "host", "--name", "smart_trailer_application"]'
-
-          ank run workload trailer_properties_provider --runtime podman --config "$CFG_PROVIDER" --agent agent_A
-          ank run workload smart_trailer_application --runtime podman --config "$CFG_APP" --agent agent_A
-
-          echo "Called Ankaios to start the Trailer Properties Digital Twin Provider and Smart Trailer Application"
-          echo "Check Ankaios status with 'ank get workloads'"
-          exit 0
-        fi
+        echo "Called Ankaios to start the Trailer Properties Digital Twin Provider and Smart Trailer Application"
+        echo "Check Ankaios status with 'ank get workloads'"
+        rm "${PROTO_PATH}/${PROTO}"
+        exit 0
       fi
     done
   fi
 done
 # We didn't find an endpoint which satisfied our conditions
+rm "${PROTO_PATH}/${PROTO}"
 exit 1

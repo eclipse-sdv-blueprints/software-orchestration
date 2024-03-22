@@ -50,9 +50,6 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
         cargo build --release --target=${CARGOARCH} -p "${APP_NAME}"; \
         cp /sdv/target/${CARGOARCH}/release/"${APP_NAME}" /sdv/service
 
-RUN target=./target/release/ cargo build --release --bin "${APP_NAME}" && \
-    cp ./target/release/"${APP_NAME}" /sdv/service
-
 ################################################################################
 # Create a new stage for running the application that contains the minimal
 # runtime dependencies for the application. This often uses a different base

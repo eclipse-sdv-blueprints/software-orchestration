@@ -40,7 +40,7 @@ BODY='{"id":"dtmi:sdv:Trailer:IsTrailerConnected;1"}'
 PROTO_URL="https://github.com/eclipse-ibeji/ibeji/releases/download/0.1.1/invehicle_digital_twin.proto"
 PROTO_PATH="${SCRIPT_DIR}"
 PROTO="invehicle_digital_twin.proto"
-curl -L "${PROTO_URL}" -o "${PROTO}"
+curl -L "${PROTO_URL}" -o "${PROTO_PATH}/${PROTO}"
 
 EXPECTED_PROTOCOL="grpc"
 EXPECTED_OPERATION="get"
@@ -78,38 +78,22 @@ do
     do
       if [[ $(echo $OPERATION | tr '[:upper:]' '[:lower:]') == $EXPECTED_OPERATION ]]
       then
-        URI=$(echo $ENDPOINT | jq -r '.uri')
-        CONTEXT=$(echo $ENDPOINT | jq -r '.context')
+        echo "Trailer is connected! Starting workloads to manage it"
 
-        # We need the authority for the server, so remove the http://
-        get_server=$(echo "$URI" | sed 's/http:\/\///g')
+        # The service.kube and service.yml files for these two services are included in the BlueChi devcontainer
+        # See /etc/containers/systemd for these files
+        # Start up the other workloads using systemctl
+        systemctl start trailer-properties
+        systemctl start smart-trailer
 
-        # Call get for the "trailer connected provider" to check if it's connected
-        GET_PROTO_PATH="${SCRIPT_DIR}/../interfaces"
-        GET_PROTO="digital_twin_get_provider.proto"
-        GET_SERVER=$get_server
-        GET_SERVICE="digital_twin_get_provider.DigitalTwinGetProvider"
-        GET_METHOD="Get"
-        GET_OUTPUT=$(grpcurl -import-path $GET_PROTO_PATH -proto $GET_PROTO -plaintext $GET_SERVER $GET_SERVICE/$GET_METHOD 2>&1)
-
-        # For now, this always returns true, this can be expanded to simulate connecting and disconnecting the trailer
-        if [[ $(echo $GET_OUTPUT | jq -r '.propertyValue') ]]
-        then
-          echo "Trailer is connected! Starting workloads to manage it"
-
-          # The service.kube and service.yml files for these two services are included in the BlueChi devcontainer
-          # See /etc/containers/systemd for these files
-          # Start up the other workloads using systemctl
-          systemctl start trailer-properties
-          systemctl start smart-trailer
-
-          echo "Called systemctl to start the Trailer Properties Digital Twin Provider and Smart Trailer Application"
-          echo "Check systemctl status with 'systemctl status trailer-properties' and 'systemctl status smart-trailer' for status"
-          exit 0
-        fi
+        echo "Called systemctl to start the Trailer Properties Digital Twin Provider and Smart Trailer Application"
+        echo "Check systemctl status with 'systemctl status trailer-properties' and 'systemctl status smart-trailer' for status"
+        rm "${PROTO_PATH}/${PROTO}"
+        exit 0
       fi
     done
   fi
 done
 # We didn't find an endpoint which satisfied our conditions
+rm "${PROTO_PATH}/${PROTO}"
 exit 1
