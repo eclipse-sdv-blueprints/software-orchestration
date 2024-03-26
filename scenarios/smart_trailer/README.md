@@ -27,25 +27,41 @@ the language of your choice to generate clients for interacting with the service
 
 If you would like to containerize the sample workloads, you can do so by running:
 
-1. Run the following command in this directory to build the docker container. Or adjust this
-command depending on where you are running it from, but the build context is the directory where
-this README.md and the Dockerfile.sample_workloads file are located.
+- Run the following command in this directory to build the docker container. If you run it from another
+directory, adjust this command accordingly because the docker build context is the directory where this
+README.md and the Dockerfile.sample_workloads files are located.
+
+>Note: The dockerfile defaults to build the
+[Trailer Properties Provider](./digital_twin_providers/trailer_properties_provider/) if a build
+argument is not provided.
 
     ```shell
-    docker build -t <image_name> -f <Dockerfile.sample_workloads> [--build-arg=APP_NAME=<workload name>] .
+    docker build -t <image_name> -f Dockerfile.sample_workloads [--build-arg=APP_NAME=<workload_name>] .
     ```
-
     For example, to build an image for the `smart_trailer_application` workload:
 
     ```shell
-    docker build -t ibeji_integration -f Dockerfile.freyja_apps.amd64 --build-arg APP_NAME=smart_trailer_application .
+    docker build -t ghcr.io/ladatz/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
     ```
 
-You can also use docker builx build, for example:
+- You can also use docker buildx build for cross-compilation, for example to build and push to a container registry:
 
-Or podman:
+    ```shell
+    docker buildx build [--platform=<platform_name(s)>] -t <image_name> -f Dockerfile.sample_workloads [--build-arg=APP_NAME=<workload_name>] . --push
+    ```
+    For example, to build an image for the `smart_trailer_application` workload for linux/amd64 and linux/arm64:
 
+    ```shell
+    docker buildx build --platform=linux/amd64,linux/arm64 -t ghcr.io/ladatz/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application . --push
+    ```
 
-The dockerfile defaults to build the
-[Trailer Properties Provider](./digital_twin_providers/trailer_properties_provider/) if a build
-argument is not provided.
+- You can also use podman:
+
+    ```shell
+    podman build -t <image_name> -f Dockerfile.sample_workloads [--build-arg=APP_NAME=<workload_name>] .
+    ```
+    For example, to build an image for the `smart_trailer_application` workload:
+
+    ```shell
+    podman build -t ghcr.io/ladatz/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
+    ```
