@@ -109,13 +109,13 @@ async fn receive_trailer_weight_updates(
         .will_message(lwt)
         .finalize();
 
-    let _connect_response = client
+    client
         .connect(conn_opts)
-        .map_err(|err| format!("Failed to connect due to '{err:?}"));
+        .map_err(|err| format!("Failed to connect due to '{err:?}"))?;
 
-    let mut _subscribe_response = client
+    client
         .subscribe(topic, mqtt::types::QOS_1)
-        .map_err(|err| format!("Failed to subscribe to topic {topic} due to '{err:?}'"));
+        .map_err(|err| format!("Failed to subscribe to topic {topic} due to '{err:?}'"))?;
 
     // Copy topic for separate thread.
     let topic_string = topic.to_string();
