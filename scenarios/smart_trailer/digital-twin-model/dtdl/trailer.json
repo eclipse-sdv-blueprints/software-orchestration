@@ -1,0 +1,24 @@
+[
+    {
+      "@context": ["dtmi:dtdl:context;3"],
+      "@type": "Interface",
+      "@id": "dtmi:sdv:Trailer;1",
+      "description": "Trailer used for transporting cargo",
+      "contents": [
+        {
+            "@type": "Property",
+            "@id": "dtmi:sdv:Trailer:Weight;1",
+            "name": "TrailerWeight",
+            "description": "The weight of the trailer",
+            "schema": "integer"
+          },
+          {
+            "@type": "Property",
+            "@id": "dtmi:sdv:Trailer:IsTrailerConnected;1",
+            "name": "IsTrailerConnected",
+            "description": "Is trailer connected?",
+            "schema": "boolean"
+          }
+      ]
+    }
+]
