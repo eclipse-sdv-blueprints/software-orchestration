@@ -129,11 +129,9 @@ async fn receive_trailer_weight_updates(
                 info!("{}", msg);
             } else if !client.is_connected() {
                 if client.reconnect().is_ok() {
-                    _subscribe_response = client
+                    client
                         .subscribe(topic_string.as_str(), mqtt::types::QOS_1)
-                        .map_err(|err| {
-                            format!("Failed to subscribe to topic {topic_string} due to '{err:?}'")
-                        });
+                        .map_err(|err| format!("Failed to subscribe to topic {topic_string} due to '{err:?}'"))?;
                 } else {
                     break;
                 }
