@@ -25,7 +25,7 @@ the language of your choice to generate clients for interacting with the service
 
 >Note: Before running any of the following commands, replace all placeholders (wrapped with `<>`).
 
-If you would like to containerize the sample workloads, you can do so by running:
+To containerize the sample workloads, follow the steps below for your container engine:
 
 - Run the following command in this directory to build the docker container. If you run it from another
 directory, adjust this command accordingly because the docker build context is the directory where this
