@@ -140,8 +140,12 @@ async fn receive_trailer_weight_updates(
 
         if client.is_connected() {
             debug!("Disconnecting");
-            client.unsubscribe(topic_string.as_str()).unwrap();
-            client.disconnect(None).unwrap();
+            client
+                .unsubscribe(topic_string.as_str())
+                .map_err(|err| format!("Error unsubscribing: {err}"))?;
+            client
+                .disconnect(None)
+                .map_err(|err| format!("Error disconnecting: {err}"))?;
         }
     });
 
