@@ -116,13 +116,9 @@ impl TrailerPropertiesProviderImpl {
     /// * `min_interval_ms` - The frequency of the data coming over the data stream.
     pub fn new(data_stream: watch::Receiver<i32>, min_interval_ms: u64) -> Self {
         // Initialize entity map.
-        let mut entity_map = HashMap::new();
-
-        // Insert entry for entity id's associated with provider.
-        entity_map.insert(
-            trailer_v1::trailer::trailer_weight::ID.to_string(),
-            Vec::new(),
-        );
+        let entity_map = HashMap::from([
+            (trailer_v1::trailer::trailer_weight::ID.to_string(), Vec::new()),
+        ]);
 
         // Create new instance.
         TrailerPropertiesProviderImpl {
