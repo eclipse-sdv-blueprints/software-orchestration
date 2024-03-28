@@ -62,7 +62,7 @@ async fn register_trailer_weight(
     let request = tonic::Request::new(RegisterRequest {
         entity_access_info_list: vec![entity_access_info],
     });
-    let _response = client.register(request).await?;
+    client.register(request).await?;
 
     Ok(())
 }
