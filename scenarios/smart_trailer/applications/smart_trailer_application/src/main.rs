@@ -178,10 +178,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let frequency_ms = env::args()
         .find_map(|arg| {
             if arg.contains(FREQUENCY_MS_FLAG) {
-                return Some(arg.replace(FREQUENCY_MS_FLAG, ""));
+                Some(arg.replace(FREQUENCY_MS_FLAG, ""))
+            } else {
+                None
             }
-
-            None
         })
         .unwrap_or_else(|| DEFAULT_FREQUENCY_MS.to_string());
 
