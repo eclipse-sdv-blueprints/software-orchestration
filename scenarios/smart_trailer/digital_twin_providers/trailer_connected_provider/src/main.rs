@@ -13,7 +13,9 @@ use digital_twin_providers_common::constants::{digital_twin_operation, digital_t
 use digital_twin_providers_common::utils::discover_service_using_chariott;
 use env_logger::{Builder, Target};
 use invehicle_stack_interfaces::invehicle_digital_twin::v1::invehicle_digital_twin_client::InvehicleDigitalTwinClient;
-use invehicle_stack_interfaces::invehicle_digital_twin::v1::{EndpointInfo, EntityAccessInfo, RegisterRequest};
+use invehicle_stack_interfaces::invehicle_digital_twin::v1::{
+    EndpointInfo, EntityAccessInfo, RegisterRequest,
+};
 use log::{debug, info, LevelFilter};
 use smart_trailer_interfaces::digital_twin_get_provider::v1::digital_twin_get_provider_server::DigitalTwinGetProviderServer;
 use std::net::SocketAddr;
@@ -56,7 +58,7 @@ async fn register_entity(
     let request = tonic::Request::new(RegisterRequest {
         entity_access_info_list: vec![entity_access_info],
     });
-    let _response = client.register(request).await?;
+    client.register(request).await?;
 
     Ok(())
 }

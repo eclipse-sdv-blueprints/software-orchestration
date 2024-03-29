@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: MIT
 
 [package]
-name = "digital_twin_providers_common"
+name = "digital-twin-providers-common"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
 
 [dependencies]
-invehicle-stack-interfaces = { path = "../../proto_build" }
+invehicle-stack-interfaces = { workspace = true }
 log =  { workspace = true }
 tonic =  { workspace = true }

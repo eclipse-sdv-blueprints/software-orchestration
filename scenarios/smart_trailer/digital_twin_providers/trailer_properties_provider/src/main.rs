@@ -16,7 +16,9 @@ use digital_twin_providers_common::constants::{digital_twin_operation, digital_t
 use digital_twin_providers_common::utils::discover_service_using_chariott;
 use env_logger::{Builder, Target};
 use invehicle_stack_interfaces::invehicle_digital_twin::v1::invehicle_digital_twin_client::InvehicleDigitalTwinClient;
-use invehicle_stack_interfaces::invehicle_digital_twin::v1::{EndpointInfo, EntityAccessInfo, RegisterRequest};
+use invehicle_stack_interfaces::invehicle_digital_twin::v1::{
+    EndpointInfo, EntityAccessInfo, RegisterRequest,
+};
 use invehicle_stack_interfaces::module::managed_subscribe::v1::managed_subscribe_callback_server::ManagedSubscribeCallbackServer;
 use log::{debug, info, warn, LevelFilter};
 use tokio::signal;
@@ -32,6 +34,10 @@ const CHARIOTT_SERVICE_DISCOVERY_URI: &str = "http://0.0.0.0:50000";
 const PROVIDER_AUTHORITY: &str = "0.0.0.0:4030";
 
 const DEFAULT_MIN_INTERVAL_MS: u64 = 10000; // 10 seconds
+
+// Weight bounds on the trailer weight in kilograms
+const MIN_TRAILER_WEIGHT: i32 = 1000;
+const MAX_TRAILER_WEIGHT: i32 = 2000;
 
 /// Register the trailer weight property's endpoint.
 ///
@@ -73,10 +79,10 @@ async fn register_trailer_weight(
 /// `min_interval_ms` - minimum frequency for data stream.
 fn start_trailer_weight_data_stream(min_interval_ms: u64) -> watch::Receiver<i32> {
     debug!("Starting the Provider's trailer weight data stream.");
-    let mut weight: i32 = 1000;
+    let mut weight: i32 = MIN_TRAILER_WEIGHT;
     let (sender, reciever) = watch::channel(weight);
     tokio::spawn(async move {
-        let mut is_weight_increasing: bool = true;
+        let mut delta = 500;
         loop {
             debug!(
                 "Recording new value for {} of {weight}",
@@ -91,21 +97,15 @@ fn start_trailer_weight_data_stream(min_interval_ms: u64) -> watch::Receiver<i32
             debug!("Completed the publish request");
 
             // Calculate the new weight.
-            // It bounces back and forth between 1000 and 2000 kilograms.
+            // It bounces back and forth between MIN_TRAILER_WEIGHT and MAX_TRAILER_WEIGHT.
             // It increases in increments of 500 to simulate a large amount of cargo being loaded
             // And decreases in increments of 50 to simulate smaller deliveries being made
-            if is_weight_increasing {
-                if weight == 2000 {
-                    is_weight_increasing = false;
-                    weight -= 50;
-                } else {
-                    weight += 500;
-                }
-            } else if weight == 1000 {
-                is_weight_increasing = true;
-                weight += 500;
-            } else {
-                weight -= 50;
+            weight += delta;
+
+            if weight >= MAX_TRAILER_WEIGHT {
+                delta = -50;
+            } else if weight <= MIN_TRAILER_WEIGHT {
+                delta = 500;
             }
 
             sleep(Duration::from_millis(min_interval_ms)).await;

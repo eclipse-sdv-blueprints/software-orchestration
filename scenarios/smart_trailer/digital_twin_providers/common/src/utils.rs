@@ -2,10 +2,10 @@
 // Licensed under the MIT license.
 // SPDX-License-Identifier: MIT
 
-use invehicle_stack_interfaces::service_discovery::core::v1::service_registry_client::ServiceRegistryClient;
-use invehicle_stack_interfaces::service_discovery::core::v1::DiscoverRequest;
 use invehicle_stack_interfaces::invehicle_digital_twin::v1::invehicle_digital_twin_client::InvehicleDigitalTwinClient;
 use invehicle_stack_interfaces::invehicle_digital_twin::v1::{EndpointInfo, FindByIdRequest};
+use invehicle_stack_interfaces::service_discovery::core::v1::service_registry_client::ServiceRegistryClient;
+use invehicle_stack_interfaces::service_discovery::core::v1::DiscoverRequest;
 use log::{debug, info};
 use tonic::{Request, Status};
 
@@ -43,15 +43,15 @@ pub async fn discover_service_using_chariott(
 
     let service = response.into_inner().service.ok_or_else(|| Status::not_found("Did not find a service in Chariott with namespace '{namespace}', name '{name}' and version {version}"))?;
 
-    if service.communication_kind != communication_kind
-        && service.communication_reference != communication_reference
+    if service.communication_kind == communication_kind
+        && service.communication_reference == communication_reference
     {
-        return Err(Status::not_found(
+        Ok(service.uri)
+    } else {
+        Err(Status::not_found(
             "Did not find a service in Chariott with namespace '{namespace}', name '{name}' and version {version} that has communication kind '{communication_kind} and communication_reference '{communication_reference}''",
-        ));
+        ))
     }
-
-    Ok(service.uri)
 }
 
 /// Use Ibeji to discover the endpoint for a digital twin provider that satifies the requirements.

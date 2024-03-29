@@ -36,6 +36,8 @@ WORKDIR /sdv
 
 COPY ./ .
 
+COPY ./container/cargo/config.toml ./.cargo/config.toml
+
 # Based on the target architecture, add the appropriate build target and build service.
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
         CARGOARCH="x86_64-unknown-linux-gnu"; \

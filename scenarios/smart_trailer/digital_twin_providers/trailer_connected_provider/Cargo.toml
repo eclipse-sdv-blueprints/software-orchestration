@@ -9,14 +9,14 @@ edition = "2021"
 license = "MIT"
 
 [dependencies]
-digital-twin-model = { path = "../../digital-twin-model" }
-digital_twin_providers_common = { path = "../common" }
+digital-twin-model = { workspace = true }
+digital-twin-providers-common = { workspace = true }
 env_logger = { workspace = true }
-invehicle-stack-interfaces = { path = "../../proto_build" }
+invehicle-stack-interfaces = { workspace = true }
 log = { workspace = true }
 serde = { workspace = true }
 serde_derive = { workspace = true }
 serde_json = { workspace = true }
-smart_trailer_interfaces = { path = "./proto_build" }
+smart-trailer-interfaces = { workspace = true }
 tokio = { workspace = true, features = ["macros", "rt-multi-thread", "signal"] }
 tonic = { workspace = true }

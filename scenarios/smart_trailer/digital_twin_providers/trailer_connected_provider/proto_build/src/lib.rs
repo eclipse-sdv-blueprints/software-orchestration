@@ -4,7 +4,6 @@
 
 pub mod digital_twin_get_provider {
     pub mod v1 {
-        #![allow(clippy::derive_partial_eq_without_eq)]
         tonic::include_proto!("digital_twin_get_provider");
     }
 }

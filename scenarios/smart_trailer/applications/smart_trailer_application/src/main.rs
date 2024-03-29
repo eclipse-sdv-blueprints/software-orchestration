@@ -74,7 +74,7 @@ async fn get_trailer_weight_subscription_info(
 async fn receive_trailer_weight_updates(
     broker_uri: &str,
     topic: &str,
-) -> Result<JoinHandle<()>, String> {
+) -> Result<JoinHandle<Result<(), String>>, String> {
     // Create a unique id for the client.
     let client_id = format!("{MQTT_CLIENT_ID}-{}", Uuid::new_v4());
 
@@ -120,7 +120,7 @@ async fn receive_trailer_weight_updates(
     // Copy topic for separate thread.
     let topic_string = topic.to_string();
 
-    let sub_handle = tokio::spawn(async move {
+    let sub_handle: JoinHandle<Result<(), String>> = tokio::spawn(async move {
         for msg in receiver.iter() {
             if let Some(msg) = msg {
                 // Here we log the message received. This could be expanded to parsing the message,
@@ -131,7 +131,9 @@ async fn receive_trailer_weight_updates(
                 if client.reconnect().is_ok() {
                     client
                         .subscribe(topic_string.as_str(), mqtt::types::QOS_1)
-                        .map_err(|err| format!("Failed to subscribe to topic {topic_string} due to '{err:?}'"))?;
+                        .map_err(|err| {
+                            format!("Failed to subscribe to topic {topic_string} due to '{err:?}'")
+                        })?;
                 } else {
                     break;
                 }
@@ -147,6 +149,7 @@ async fn receive_trailer_weight_updates(
                 .disconnect(None)
                 .map_err(|err| format!("Error disconnecting: {err}"))?;
         }
+        Ok(())
     });
 
     Ok(sub_handle)

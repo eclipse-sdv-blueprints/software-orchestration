@@ -116,9 +116,10 @@ impl TrailerPropertiesProviderImpl {
     /// * `min_interval_ms` - The frequency of the data coming over the data stream.
     pub fn new(data_stream: watch::Receiver<i32>, min_interval_ms: u64) -> Self {
         // Initialize entity map.
-        let entity_map = HashMap::from([
-            (trailer_v1::trailer::trailer_weight::ID.to_string(), Vec::new()),
-        ]);
+        let entity_map = HashMap::from([(
+            trailer_v1::trailer::trailer_weight::ID.to_string(),
+            Vec::new(),
+        )]);
 
         // Create new instance.
         TrailerPropertiesProviderImpl {
@@ -132,14 +133,16 @@ impl TrailerPropertiesProviderImpl {
     ///
     /// # Arguments
     /// `payload` - Payload sent with the 'PUBLISH' action.
-    pub fn handle_publish_action(&self, payload: CallbackPayload) {
+    pub fn handle_publish_action(&self, payload: CallbackPayload) -> Result<(), String> {
         // Get payload information.
         let topic = payload.topic;
         let constraints = payload.constraints;
         let min_interval_ms = self.min_interval_ms;
 
-         // This should not be empty.
-         let subscription_info = payload.subscription_info.unwrap();
+        // This should not be empty.
+        let subscription_info = payload
+            .subscription_info
+            .ok_or_else(|| "Failed to get subscription info".to_string())?;
 
         // Create stop publish channel.
         let (sender, mut reciever) = mpsc::channel(10);
@@ -154,7 +157,9 @@ impl TrailerPropertiesProviderImpl {
         {
             let mut entity_lock = self.entity_map.write();
             let get_result = entity_lock.get_mut(&payload.entity_id);
-            get_result.unwrap().push(topic_info);
+            get_result
+                .ok_or_else(|| "Failed to get entity information".to_string())?
+                .push(topic_info);
         }
 
         let data_stream = self.data_stream.clone();
@@ -166,7 +171,9 @@ impl TrailerPropertiesProviderImpl {
 
             for constraint in constraints {
                 if constraint.r#type == *FREQUENCY_MS {
-                    frequency_ms = u64::from_str(&constraint.value).unwrap();
+                    frequency_ms = u64::from_str(&constraint.value).map_err(|err| {
+                        format!("Failed to parse frequency constraint due to '{err:?}'")
+                    })?;
                 };
             }
 
@@ -174,7 +181,7 @@ impl TrailerPropertiesProviderImpl {
                 // See if we need to shutdown.
                 if reciever.try_recv() == Err(mpsc::error::TryRecvError::Disconnected) {
                     info!("Shutdown thread for {topic}.");
-                    return;
+                    return Result::<(), String>::Ok(());
                 }
 
                 // Get data from stream at the current instant.
@@ -198,20 +205,22 @@ impl TrailerPropertiesProviderImpl {
                 // Sleep for requested amount of time.
                 sleep(Duration::from_millis(frequency_ms)).await;
             }
+            Result::<(), String>::Ok(())
         });
+        Ok(())
     }
 
     /// Handles the 'STOP_PUBLISH' action from the callback.
     ///
     /// # Arguments
     /// `payload` - Payload sent with the 'STOP_PUBLISH' action.
-    pub fn handle_stop_publish_action(&self, payload: CallbackPayload) {
+    pub fn handle_stop_publish_action(&self, payload: CallbackPayload) -> Result<(), String> {
         let topic_info: TopicInfo;
 
         let mut entity_lock = self.entity_map.write();
         let get_result = entity_lock.get_mut(&payload.entity_id);
 
-        let topics = get_result.unwrap();
+        let topics = get_result.ok_or_else(|| "Failed to get entity information".to_string())?;
 
         // Check to see if topic exists.
         if let Some(index) = topics.iter_mut().position(|t| t.topic == payload.topic) {
@@ -220,8 +229,10 @@ impl TrailerPropertiesProviderImpl {
 
             // Stop publishing to removed topic.
             drop(topic_info.stop_channel);
+            Ok(())
         } else {
             warn!("No topic found matching {}", payload.topic);
+            Err(format!("No topic found matching {}", payload.topic))
         }
     }
 }
@@ -238,13 +249,21 @@ impl ManagedSubscribeCallback for TrailerPropertiesProviderImpl {
     ) -> Result<Response<TopicManagementResponse>, Status> {
         let inner = request.into_inner();
         let action = inner.action;
-        let payload = inner.payload.unwrap();
+        let payload = inner
+            .payload
+            .ok_or_else(|| Status::invalid_argument("Failed to get payload".to_string()))?;
 
-        let provider_action = ProviderAction::from_str(&action).unwrap();
+        let provider_action = ProviderAction::from_str(&action).map_err(|err| {
+            Status::invalid_argument(format!("Failed to parse action due to '{err:?}'"))
+        })?;
 
         match provider_action {
-            ProviderAction::Publish => Self::handle_publish_action(self, payload),
-            ProviderAction::StopPublish => Self::handle_stop_publish_action(self, payload),
+            ProviderAction::Publish => {
+                Self::handle_publish_action(self, payload).map_err(Status::internal)?
+            }
+            ProviderAction::StopPublish => {
+                Self::handle_stop_publish_action(self, payload).map_err(Status::internal)?
+            }
         }
 
         Ok(Response::new(TopicManagementResponse {}))
