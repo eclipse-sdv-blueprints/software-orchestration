@@ -18,6 +18,7 @@ use parking_lot::RwLock;
 use serde_derive::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 use tokio::sync::{mpsc, watch};
+use tokio::task::JoinHandle;
 use tokio::time::{sleep, Duration};
 use tonic::{Request, Response, Status};
 
@@ -165,7 +166,7 @@ impl TrailerPropertiesProviderImpl {
         let data_stream = self.data_stream.clone();
 
         // Start thread for new topic.
-        tokio::spawn(async move {
+        let _handle: JoinHandle<Result<(), String>> = tokio::spawn(async move {
             // Get constraints information.
             let mut frequency_ms = min_interval_ms;
 
@@ -181,7 +182,7 @@ impl TrailerPropertiesProviderImpl {
                 // See if we need to shutdown.
                 if reciever.try_recv() == Err(mpsc::error::TryRecvError::Disconnected) {
                     info!("Shutdown thread for {topic}.");
-                    return Result::<(), String>::Ok(());
+                    return Ok(());
                 }
 
                 // Get data from stream at the current instant.
@@ -205,7 +206,7 @@ impl TrailerPropertiesProviderImpl {
                 // Sleep for requested amount of time.
                 sleep(Duration::from_millis(frequency_ms)).await;
             }
-            Result::<(), String>::Ok(())
+            Ok(())
         });
         Ok(())
     }

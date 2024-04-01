@@ -27,13 +27,13 @@ the language of your choice to generate clients for interacting with the service
 
 To containerize the sample workloads, follow the steps below for your container engine:
 
-- Run the following command in this directory to build the docker container. If you run it from another
-directory, adjust this command accordingly because the docker build context is the directory where this
-README.md and the Dockerfile.sample_workloads files are located.
-
 >Note: The dockerfile defaults to build the
 [Trailer Properties Provider](./digital_twin_providers/trailer_properties_provider/) if a build
 argument is not provided.
+
+#### Building with Docker
+
+- Run the following command in this directory to build the docker container. 
 
     ```shell
     docker build -t <image_name> -f Dockerfile.sample_workloads [--build-arg=APP_NAME=<workload_name>] .
@@ -41,10 +41,26 @@ argument is not provided.
     For example, to build an image for the `smart_trailer_application` workload:
 
     ```shell
-    docker build -t ghcr.io/ladatz/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
+    docker build -t ghcr.io/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
     ```
 
-- You can also use docker buildx build for cross-compilation, for example to build and push to a container registry:
+- If you build the container from another directory, change the -f argument and the build context.
+The docker build context is the directory where this README.md and the Dockerfile.sample_workloads
+files are located. For example, if you run build from the root of this repository, the command
+would be:
+
+    ```shell
+    docker build -t <image_name> -f <path_to>/Dockerfile.sample_workloads [--build-arg=APP_NAME=<workload_name>] <path_to_dockerfile_directory>
+    ```
+    For example, to build an image for the `smart_trailer_application` workload:
+
+    ```shell
+    docker build -t ghcr.io/sdvblueprint/smart_trailer_application:0.1.0 -f ./scenarios/smart_trailer/Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application ./scenarios/smart_trailer
+    ```
+
+#### Building with Docker Buildx build for cross-compilation
+
+- To use docker buildx build for cross-compilation, for example to build and push to a container registry:
 
     ```shell
     docker buildx build [--platform=<platform_name(s)>] -t <image_name> -f Dockerfile.sample_workloads [--build-arg=APP_NAME=<workload_name>] . --push
@@ -52,10 +68,12 @@ argument is not provided.
     For example, to build an image for the `smart_trailer_application` workload for linux/amd64 and linux/arm64:
 
     ```shell
-    docker buildx build --platform=linux/amd64,linux/arm64 -t ghcr.io/ladatz/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application . --push
+    docker buildx build --platform=linux/amd64,linux/arm64 -t ghcr.io/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application . --push
     ```
 
-- You can also use podman:
+#### Building with Podman
+
+- Run the following command in this directory to build the podman container. 
 
     ```shell
     podman build -t <image_name> -f Dockerfile.sample_workloads [--build-arg=APP_NAME=<workload_name>] .
@@ -63,5 +81,5 @@ argument is not provided.
     For example, to build an image for the `smart_trailer_application` workload:
 
     ```shell
-    podman build -t ghcr.io/ladatz/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
+    podman build -t ghcr.io/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
     ```
