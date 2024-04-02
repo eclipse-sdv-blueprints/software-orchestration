@@ -82,8 +82,8 @@ do
         echo "Trailer is connected! Starting workloads to manage it"
 
         # Start up the other workloads using podman
-        CFG_PROVIDER=$'image: ghcr.io/ladatz/sdvblueprint/trailer_properties_provider:0.1.0\ncommandOptions: ["--network", "host", "--name", "trailer_properties_provider"]'
-        CFG_APP=$'image: ghcr.io/ladatz/sdvblueprint/smart_trailer_application:0.1.0\ncommandOptions: ["--network", "host", "--name", "smart_trailer_application"]'
+        CFG_PROVIDER=$'image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/trailer-properties-provider:0.1.0\ncommandOptions: ["--network", "host", "--name", "trailer_properties_provider"]'
+        CFG_APP=$'image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/smart-trailer-application:0.1.0\ncommandOptions: ["--network", "host", "--name", "smart_trailer_application"]'
 
         ank run workload trailer_properties_provider --runtime podman --config "$CFG_PROVIDER" --agent agent_A
         ank run workload smart_trailer_application --runtime podman --config "$CFG_APP" --agent agent_A
