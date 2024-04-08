@@ -98,9 +98,8 @@ fn publish_message(broker_uri: &str, topic: &str, content: &str) -> Result<(), S
         .map_err(|err| format!("Failed to connect due to '{err:?}"));
 
     let msg = mqtt::Message::new(topic, content, mqtt::types::QOS_1);
-    if let Err(err) = client.publish(msg) {
-        return Err(format!("Failed to publish message due to '{err:?}"));
-    }
+    client.publish(msg)
+        .map_err(|err| format!("Failed to publish message due to '{err:?}"))?;
 
     client.disconnect(None)
         .map_err(|err| format!("Failed to disconnect from topic '{topic}' on broker {broker_uri} due to {err:?}"))?;
