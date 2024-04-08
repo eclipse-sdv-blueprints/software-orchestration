@@ -41,7 +41,7 @@ argument is not provided.
     For example, to build an image for the `smart_trailer_application` workload:
 
     ```shell
-    docker build -t ghcr.io/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
+    docker build -t ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
     ```
 
 - If you build the container from another directory, change the -f argument and the build context.
@@ -55,7 +55,7 @@ would be:
     For example, to build an image for the `smart_trailer_application` workload:
 
     ```shell
-    docker build -t ghcr.io/sdvblueprint/smart_trailer_application:0.1.0 -f ./scenarios/smart_trailer/Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application ./scenarios/smart_trailer
+    docker build -t ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/smart_trailer_application:0.1.0 -f ./scenarios/smart_trailer/Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application ./scenarios/smart_trailer
     ```
 
 #### Building with Docker Buildx build for cross-compilation
@@ -68,7 +68,7 @@ would be:
     For example, to build an image for the `smart_trailer_application` workload for linux/amd64 and linux/arm64:
 
     ```shell
-    docker buildx build --platform=linux/amd64,linux/arm64 -t ghcr.io/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application . --push
+    docker buildx build --platform=linux/amd64,linux/arm64 -t ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application . --push
     ```
 
 #### Building with Podman
@@ -81,5 +81,5 @@ would be:
     For example, to build an image for the `smart_trailer_application` workload:
 
     ```shell
-    podman build -t ghcr.io/sdvblueprint/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
+    podman build -t ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/smart_trailer_application:0.1.0 -f Dockerfile.sample_workloads --build-arg APP_NAME=smart_trailer_application .
     ```

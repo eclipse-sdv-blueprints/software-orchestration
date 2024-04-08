@@ -6,8 +6,8 @@ workloads:
       - key: project
         value: chariott
     runtimeConfig: |
-      image: ghcr.io/ladatz/software-orchestration/eclipse-chariott/service-discovery:0.2.0
-      commandOptions: ["--network", "host", "--name", "service-discovery"]
+      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-chariott/service-discovery:0.1.1
+      commandOptions: ["--network", "host", "--name", "service_discovery"]
   mqtt_broker:
     runtime: podman
     agent: agent_A
@@ -15,7 +15,7 @@ workloads:
       - key: project
         value: agemo
     runtimeConfig: |
-      image: ghcr.io/ladatz/software-orchestration/eclipse-mosquitto/mqtt-broker-agemo-config:0.1.1
+      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-mosquitto/mqtt-broker:latest
       commandOptions: ["--network", "host", "--name", "mqtt-broker"]
   dynamic_topic_management:
     runtime: podman
@@ -24,7 +24,7 @@ workloads:
       - key: project
         value: agemo
     runtimeConfig: |
-      image: ghcr.io/ladatz/software-orchestration/eclipse-agemo/pub-sub-service:0.1.1
+      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-agemo/pub-sub-service:0.1.0
       commandOptions: ["--network", "host", "--name", "pub-sub-service"]
   digital_twin_vehicle:
     runtime: podman
@@ -33,7 +33,7 @@ workloads:
       - key: project
         value: ibeji
     runtimeConfig: |
-      image: ghcr.io/ladatz/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.0
+      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0
       commandOptions: ["--network", "host", "--name", "invehicle-digital-twin"]
   digital_twin_cloud_sync:
     runtime: podman
@@ -42,5 +42,16 @@ workloads:
       - key: project
         value: freyja
     runtimeConfig: |
-      image: ghcr.io/ladatz/sdvblueprint/eclipse-freyja/local-with-ibeji:0.1.0
+      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-freyja/local-with-ibeji:0.1.0
       commandOptions: ["--network", "host", "--name", "local-cloud-sync"]
+  cloud_connector:
+    runtime: podman
+    agent: agent_A
+    restart: true
+    updateStrategy: AT_MOST_ONCE
+    accessRights:
+      allow: []
+      deny: []
+    runtimeConfig: |
+      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-freyja/azure-cloud-connector:0.1.0
+      commandOptions: ["--network", "host", "--name", "cloud-connector", "--mount", "type=bind,src=/etc/freyja/config,dst=/mnt/config,ro=true"]

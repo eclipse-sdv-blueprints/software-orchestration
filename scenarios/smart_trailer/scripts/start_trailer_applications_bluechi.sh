@@ -4,7 +4,7 @@
 # Licensed under the MIT license.
 # SPDX-License-Identifier: MIT
 
-set -e
+set -eu
 
 # This script requires jq and grpcurl to be installed
 # These are included in the bluechi devcontainer, but if you want to run it outside
