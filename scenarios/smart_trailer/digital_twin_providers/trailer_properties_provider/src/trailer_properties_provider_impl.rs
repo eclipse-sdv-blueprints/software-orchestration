@@ -102,9 +102,8 @@ fn publish_message(broker_uri: &str, topic: &str, content: &str) -> Result<(), S
         return Err(format!("Failed to publish message due to '{err:?}"));
     }
 
-    if let Err(err) = client.disconnect(None) {
-        warn!("Failed to disconnect from topic '{topic}' on broker {broker_uri} due to {err:?}");
-    }
+    client.disconnect(None)
+        .map_err(|err| format!("Failed to disconnect from topic '{topic}' on broker {broker_uri} due to {err:?}"))?;
 
     Ok(())
 }
