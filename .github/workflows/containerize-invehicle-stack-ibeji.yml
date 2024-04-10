@@ -5,6 +5,9 @@ name: Containerize In-Vehicle Stack - Ibeji
 on:
   workflow_dispatch:
 
+env:
+  IBEJI_VERSION: 0.1.1
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -29,7 +32,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: eclipse-ibeji/ibeji
-          ref: 0.1.1
+          ref: ${{ env.IBEJI_VERSION }}
           submodules: recursive
 
       - name: Build and push multi-platform Docker image for Ibeji In-vehicle Digital Twin
@@ -39,4 +42,4 @@ jobs:
           file: Dockerfile_integrated.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.1
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-ibeji/invehicle-digital-twin:${{ env.IBEJI_VERSION }}
