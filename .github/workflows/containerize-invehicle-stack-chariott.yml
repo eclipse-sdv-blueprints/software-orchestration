@@ -5,6 +5,9 @@ name: Containerize In-Vehicle Stack - Chariott
 on:
   workflow_dispatch:
 
+env:
+  CHARIOTT_VERSION: 0.2.1
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -29,7 +32,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: eclipse-chariott/chariott
-          ref: 0.2.1
+          ref: ${{ env.CHARIOTT_VERSION }}
   
       - name: Build and push multi-platform Docker image for Chariott Service Discovery
         uses: docker/build-push-action@v5
@@ -38,4 +41,4 @@ jobs:
           file: Dockerfile.service_discovery.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:0.2.1
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:${{ env.CHARIOTT_VERSION }}

@@ -4,6 +4,9 @@ name: Containerize In-Vehicle Stack - Freyja Apps
 on:
   workflow_dispatch:
 
+env:
+  FREYJA_APPS_VERSION: 0.1.0
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -28,7 +31,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: eclipse-ibeji/ibeji-example-applications
-          ref: 0.1.0
+          ref: ${{ env.FREYJA_APPS_VERSION }}
           submodules: recursive
 
       - name: Build and push multi-platform Docker image for Freyja Application
@@ -38,7 +41,7 @@ jobs:
           file: Dockerfile.freyja_apps.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-freyja/local-with-ibeji:0.1.0
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-freyja/local-with-ibeji:${{ env.FREYJA_APPS_VERSION }}
           build-args: |
             APP_NAME=freyja-ibeji-integration-app
             CONFIG_PATH=.freyja/smart_trailer/config

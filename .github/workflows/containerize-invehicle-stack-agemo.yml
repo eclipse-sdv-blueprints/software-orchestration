@@ -5,6 +5,9 @@ name: Containerize In-Vehicle Stack - Agemo
 on:
   workflow_dispatch:
 
+env:
+  AGEMO_VERSION: 0.1.2
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -30,7 +33,7 @@ jobs:
         with:
           repository: eclipse-chariott/Agemo
           submodules: recursive
-          ref: 0.1.2
+          ref: ${{ env.AGEMO_VERSION }}
 
       - name: Build and push multi-platform Docker image for Mosquitto image with Agemo config
         uses: docker/build-push-action@v5
@@ -39,7 +42,7 @@ jobs:
           file: Dockerfile.mosquitto.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-mosquitto/mqtt-broker-agemo-config:0.1.2
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-mosquitto/mqtt-broker-agemo-config:${{ env.AGEMO_VERSION }}
 
       - name: Build and push multi-platform Docker image for Agemo Pub-Sub Service
         uses: docker/build-push-action@v5
@@ -48,4 +51,4 @@ jobs:
           file: Dockerfile_integrated.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-agemo/pub-sub-service:0.1.2
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-agemo/pub-sub-service:${{ env.AGEMO_VERSION }}
