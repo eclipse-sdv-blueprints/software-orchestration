@@ -28,10 +28,10 @@ fi
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # The Ibeji gRPC server address
-SERVER="0.0.0.0:5010"
+IBEJI_SERVER="0.0.0.0:5010"
 
 # The Ibeji FindById gRPC service and method
-SERVICE="invehicle_digital_twin.InvehicleDigitalTwin"
+IBEJI_INVEHICLE_DT_SERVICE="invehicle_digital_twin.InvehicleDigitalTwin"
 METHOD="FindById"
 
 # The request body: The IsTrailerConnected signal
@@ -49,7 +49,7 @@ EXPECTED_OPERATION="get"
 # Call FindById in a loop until something is returned
 while true; do
   STATUS=0
-  OUTPUT=$(grpcurl -import-path $PROTO_PATH -proto $PROTO -plaintext -d "$BODY" $SERVER $SERVICE/$METHOD 2>&1) || STATUS=$?
+  OUTPUT=$(grpcurl -import-path $PROTO_PATH -proto $PROTO -plaintext -d "$BODY" $IBEJI_SERVER $IBEJI_INVEHICLE_DT_SERVICE/$METHOD 2>&1) || STATUS=$?
 
   # Check if the output contains entityAccessInfo (the response from Ibeji when a provider is found)
   if echo "$OUTPUT" | grep -iq "EntityAccessInfo"
