@@ -4,7 +4,7 @@
 
 //! Module containing gRPC service implementation based on [`invehicle_stack_interfaces::digital_twin_get_provider.proto`].
 //!
-//! Provides a gRPC endpoint for getting if the trailer is connected
+//! Provides a gRPC endpoint for determining if the trailer is connected.
 use smart_trailer_interfaces::digital_twin_get_provider::v1::digital_twin_get_provider_server::DigitalTwinGetProvider;
 use smart_trailer_interfaces::digital_twin_get_provider::v1::{GetRequest, GetResponse};
 use tonic::{Request, Response, Status};
