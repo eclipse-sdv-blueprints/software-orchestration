@@ -1,4 +1,4 @@
-FROM ghcr.io/eclipse-ankaios/app-ankaios-dev:0.2.0
+FROM ghcr.io/eclipse-ankaios/app-ankaios-dev:0.3.0
 ARG TARGETARCH
 
 RUN apt-get update && apt-get -y install \

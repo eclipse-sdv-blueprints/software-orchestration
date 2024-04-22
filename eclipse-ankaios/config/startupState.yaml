@@ -1,3 +1,4 @@
+apiVersion: v0.1
 workloads:
   service_discovery:
     runtime: podman
@@ -11,6 +12,9 @@ workloads:
   mqtt_broker:
     runtime: podman
     agent: agent_A
+    dependencies:
+      service_discovery:
+        ADD_COND_RUNNING
     tags:
       - key: project
         value: agemo
@@ -20,6 +24,11 @@ workloads:
   dynamic_topic_management:
     runtime: podman
     agent: agent_A
+    dependencies:
+      service_discovery:
+        ADD_COND_RUNNING
+      mqtt_broker:
+        ADD_COND_RUNNING
     tags:
       - key: project
         value: agemo
@@ -29,6 +38,9 @@ workloads:
   digital_twin_vehicle:
     runtime: podman
     agent: agent_A
+    dependencies:
+      service_discovery:
+        ADD_COND_RUNNING
     tags:
       - key: project
         value: ibeji
@@ -38,6 +50,9 @@ workloads:
   digital_twin_cloud_sync:
     runtime: podman
     agent: agent_A
+    dependencies:
+      service_discovery:
+        ADD_COND_RUNNING
     tags:
       - key: project
         value: freyja

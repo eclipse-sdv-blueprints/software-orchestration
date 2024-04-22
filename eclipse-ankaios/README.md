@@ -93,7 +93,7 @@ Before starting active development we recommend you start once Ankaios with the 
 run_blueprint.sh
 ```
 
-2. Next, use the Ankaios CLI to verify that all initial workloads are up and running:
+2. Next, open a new terminal window and use the Ankaios CLI to verify that all initial workloads are up and running:
 
 ```shell
 ank get workloads
@@ -111,11 +111,7 @@ The output looks similar to the following:
  service_discovery          agent_A   podman    Running
 ```
 
-4. Stop Ankaios and clean up all workloads by running:
-
-```shell
-shutdown_blueprint.sh
-```
+4. Stop Ankaios and clean up all workloads by pressing `Ctrl+C` inside the terminal window of `run_blueprint.sh`.
 
 ## Customizing Devcontainer
 
