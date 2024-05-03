@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-// SPDX-License-Identifier: MIT
+// Licensed under the Apache License 2.0 license.
+// SPDX-License-Identifier: Apache-2.0
 
 // Note: This code was manually written based on the structure of the
 // vehicle model in "../dtdl/trailer.json"

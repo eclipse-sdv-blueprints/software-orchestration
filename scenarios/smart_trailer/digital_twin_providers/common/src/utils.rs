@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-// SPDX-License-Identifier: MIT
+// Licensed under the Apache License 2.0 license.
+// SPDX-License-Identifier: Apache-2.0
 
 use invehicle_stack_interfaces::invehicle_digital_twin::v1::invehicle_digital_twin_client::InvehicleDigitalTwinClient;
 use invehicle_stack_interfaces::invehicle_digital_twin::v1::{EndpointInfo, FindByIdRequest};

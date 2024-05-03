@@ -1,12 +1,12 @@
 # Copyright (c) Microsoft Corporation.
-# Licensed under the MIT license.
-# SPDX-License-Identifier: MIT
+# Licensed under the Apache License 2.0 license.
+# SPDX-License-Identifier: Apache-2.0
 
 [package]
 name = "trailer_connected_provider"
 version = "0.1.0"
 edition = "2021"
-license = "MIT"
+license = "Apache-2.0"
 
 [dependencies]
 digital-twin-model = { workspace = true }
