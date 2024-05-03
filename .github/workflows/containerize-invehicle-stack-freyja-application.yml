@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 name: Containerize In-Vehicle Stack - Freyja Apps
 
 on:
