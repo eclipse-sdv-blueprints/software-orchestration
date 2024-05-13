@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.
-// Licensed under the Apache License 2.0 license.
+// Licensed under the Apache License, Version 2.0.
 // SPDX-License-Identifier: Apache-2.0
 
 use digital_twin_model::trailer_v1;

@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.
-// Licensed under the Apache License 2.0 license.
+// Licensed under the Apache License, Version 2.0.
 // SPDX-License-Identifier: Apache-2.0
 
 use invehicle_stack_interfaces::invehicle_digital_twin::v1::invehicle_digital_twin_client::InvehicleDigitalTwinClient;
