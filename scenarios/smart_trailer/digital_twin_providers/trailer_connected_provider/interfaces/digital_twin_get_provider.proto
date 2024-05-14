@@ -1,0 +1,26 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the Apache License, Version 2.0.
+// SPDX-License-Identifier: Apache-2.0
+
+// Digital Twin "Get" Provider definition
+//
+// The protobuf definitions for a Digital Twin Provider which only supports synchronous
+// "Get" operation
+
+syntax = "proto3";
+package digital_twin_get_provider;
+
+// The service entry point to the Digital Twin Get Provider. This simple provider has one method
+// to get the property
+service DigitalTwinGetProvider {
+  // Method which gets the value of the specified property
+  rpc Get (GetRequest) returns (GetResponse);
+}
+
+message GetRequest {
+  string entity_id = 1;
+}
+
+message GetResponse {
+  bool property_value = 1;
+}

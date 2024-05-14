@@ -1,0 +1,20 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the Apache License, Version 2.0.
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+name = "smart_trailer_application"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[dependencies]
+digital-twin-model = { workspace = true }
+digital-twin-providers-common = { workspace = true }
+env_logger= { workspace = true }
+invehicle-stack-interfaces = { workspace = true }
+log = { workspace = true }
+paho-mqtt =  { workspace = true, features = ["vendored-ssl"] }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "signal"] }
+tonic = { workspace = true }
+uuid = { workspace = true, features = ["v4", "fast-rng", "macro-diagnostics"] }
