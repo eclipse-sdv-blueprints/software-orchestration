@@ -1,0 +1,25 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the Apache License, Version 2.0.
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+name = "trailer_properties_provider"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[dependencies]
+digital-twin-model = { workspace = true }
+digital-twin-providers-common = { workspace = true }
+env_logger = { workspace = true }
+invehicle-stack-interfaces = { workspace = true }
+log = { workspace = true }
+paho-mqtt =  { workspace = true, features = ["vendored-ssl"] }
+parking_lot = { workspace = true }
+serde = { workspace = true }
+serde_derive = { workspace = true }
+serde_json = { workspace = true }
+strum = { workspace = true }
+strum_macros = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "signal"] }
+tonic = { workspace = true }
