@@ -2,13 +2,13 @@
 # Licensed under the Apache License, Version 2.0
 # SPDX-License-Identifier: Apache-2.0
 
-name: Containerize In-Vehicle Stack - Chariott
+name: Containerize In-Vehicle Stack - Ibeji
 
 on:
   workflow_dispatch:
 
 env:
-  CHARIOTT_VERSION: 0.2.1
+  IBEJI_VERSION: 0.1.1
 
 jobs:
   build-and-push:
@@ -30,17 +30,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout Chariott
+      - name: Checkout Ibeji
         uses: actions/checkout@v2
         with:
-          repository: eclipse-chariott/chariott
-          ref: ${{ env.CHARIOTT_VERSION }}
-  
-      - name: Build and push multi-platform Docker image for Chariott Service Discovery
+          repository: eclipse-ibeji/ibeji
+          ref: ${{ env.IBEJI_VERSION }}
+          submodules: recursive
+
+      - name: Build and push multi-platform Docker image for Ibeji In-vehicle Digital Twin
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile.service_discovery.multi
+          file: Dockerfile_integrated.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:${{ env.CHARIOTT_VERSION }}
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-ibeji/invehicle-digital-twin:${{ env.IBEJI_VERSION }}

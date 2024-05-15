@@ -2,13 +2,13 @@
 # Licensed under the Apache License, Version 2.0
 # SPDX-License-Identifier: Apache-2.0
 
-name: Containerize In-Vehicle Stack - Chariott
+name: Containerize In-Vehicle Stack - Freyja Apps
 
 on:
   workflow_dispatch:
 
 env:
-  CHARIOTT_VERSION: 0.2.1
+  FREYJA_APPS_VERSION: 0.1.0
 
 jobs:
   build-and-push:
@@ -30,17 +30,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout Chariott
+      - name: Checkout Freyja Apps Repository
         uses: actions/checkout@v2
         with:
-          repository: eclipse-chariott/chariott
-          ref: ${{ env.CHARIOTT_VERSION }}
-  
-      - name: Build and push multi-platform Docker image for Chariott Service Discovery
+          repository: eclipse-ibeji/ibeji-example-applications
+          ref: ${{ env.FREYJA_APPS_VERSION }}
+          submodules: recursive
+
+      - name: Build and push multi-platform Docker image for Freyja Application
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile.service_discovery.multi
+          file: Dockerfile.freyja_apps.multi
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:${{ env.CHARIOTT_VERSION }}
+          tags: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-freyja/local-with-ibeji:${{ env.FREYJA_APPS_VERSION }}
+          build-args: |
+            APP_NAME=freyja-ibeji-integration-app
+            CONFIG_PATH=.freyja/smart_trailer/config
