@@ -29,8 +29,9 @@ use tonic::Status;
 
 use crate::trailer_properties_provider_impl::TrailerPropertiesProviderImpl;
 
-// TODO: These could be added in configuration
-const CHARIOTT_SERVICE_DISCOVERY_URI: &str = "http://0.0.0.0:50000";
+// Note: These could be provided in configuration files.
+// We ignore the DevSkim warning because this is a sample application. In production, https should be used.
+const CHARIOTT_SERVICE_DISCOVERY_URI: &str = "http://0.0.0.0:50000"; // DevSkim: ignore DS137138 
 const PROVIDER_AUTHORITY: &str = "0.0.0.0:4030";
 
 const DEFAULT_MIN_INTERVAL_MS: u64 = 10000; // 10 seconds
@@ -125,7 +126,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("The Provider has started.");
 
-    let provider_uri = format!("http://{PROVIDER_AUTHORITY}"); // Devskim: ignore DS137138
+    // We ignore the DevSkim warning because this is a sample application. In production, https should be used.
+    let provider_uri = format!("http://{PROVIDER_AUTHORITY}"); // DevSkim: ignore DS137138 
 
     // Get the In-vehicle Digital Twin Uri from the service discovery system
     // This could be enhanced to add retries for robustness

@@ -32,8 +32,9 @@ use uuid::Uuid;
 const FREQUENCY_MS_FLAG: &str = "freq_ms=";
 const MQTT_CLIENT_ID: &str = "smart-trailer-consumer";
 
-// TODO: These could be added in configuration
-const CHARIOTT_SERVICE_DISCOVERY_URI: &str = "http://0.0.0.0:50000";
+// Note: These could be provided in configuration files.
+// We ignore the DevSkim warning because this is a sample application. In production, https should be used.
+const CHARIOTT_SERVICE_DISCOVERY_URI: &str = "http://0.0.0.0:50000"; // Devskim: ignore DS137138
 
 const DEFAULT_FREQUENCY_MS: u64 = 10000; // 10 seconds
 
