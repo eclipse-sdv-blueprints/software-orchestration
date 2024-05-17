@@ -26,8 +26,9 @@ use trailer_connected_provider_impl::TrailerConnectedProviderImpl;
 
 mod trailer_connected_provider_impl;
 
-// TODO: These could be added in configuration
-const CHARIOTT_SERVICE_DISCOVERY_URI: &str = "http://0.0.0.0:50000";
+// Note: These could be provided in configuration files.
+// We ignore the DevSkim warning because this is a sample application. In production, https should be used.
+const CHARIOTT_SERVICE_DISCOVERY_URI: &str = "http://0.0.0.0:50000"; // Devskim: ignore DS137138
 const PROVIDER_AUTHORITY: &str = "0.0.0.0:4020";
 
 /// Register the "is trailer connected" property's endpoint.
@@ -73,7 +74,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("The Provider has started.");
 
-    let provider_uri = format!("http://{PROVIDER_AUTHORITY}");
+    // We ignore the DevSkim warning because this is a sample application. In production, https should be used.
+    let provider_uri = format!("http://{PROVIDER_AUTHORITY}"); // DevSkim: ignore DS137138 
     debug!("The Provider URI is {}", &provider_uri);
 
     // Setup the HTTP server.
