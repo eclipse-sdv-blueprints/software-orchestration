@@ -30,5 +30,5 @@ spec:
       hostNetwork: true
       containers:
         - name: local-cloud-sync
-          image: ghcr.io/ladatz/sdvblueprint/eclipse-freyja/local-with-ibeji:0.1.0
+          image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-freyja/local-with-ibeji:0.1.0
           imagePullPolicy: IfNotPresent

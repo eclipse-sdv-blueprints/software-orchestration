@@ -30,5 +30,5 @@ spec:
       hostNetwork: true
       containers:
         - name: invehicle-digital-twin
-          image: ghcr.io/ladatz/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0
+          image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.1
           imagePullPolicy: IfNotPresent 

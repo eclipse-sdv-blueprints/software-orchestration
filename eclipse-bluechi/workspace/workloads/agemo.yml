@@ -30,5 +30,5 @@ spec:
       hostNetwork: true
       containers:
         - name: pub-sub-service
-          image: ghcr.io/ladatz/sdvblueprint/eclipse-agemo/pub-sub-service:0.1.1
+          image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-agemo/pub-sub-service:0.1.2
           imagePullPolicy: IfNotPresent

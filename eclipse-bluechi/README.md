@@ -1,6 +1,6 @@
 # Eclipse BlueChi
 
-![Smart trailer blueprint](../docs/diagrams/bluechi.png)
+![Smart trailer blueprint](../docs/diagrams/bluechi_impl.svg)
 
 This document describes how to run the Eclipse Software Orchestration blueprint using Eclipse BlueChi.
 
@@ -153,7 +153,7 @@ needs two essential files:
           hostNetwork: true
           containers:
             - name: local
-              image: ghcr.io/ladatz/sdvblueprint/eclipse-freyja/local-with-ibeji:0.1.0
+              image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-freyja/local-with-ibeji:0.1.0
               imagePullPolicy: IfNotPresent
     ```
 

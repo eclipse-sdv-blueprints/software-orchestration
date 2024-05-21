@@ -30,5 +30,5 @@ spec:
       hostNetwork: true
       containers:
         - name: mqtt-broker
-          image: ghcr.io/ladatz/sdvblueprint/eclipse-mosquitto/mqtt-broker:latest
+          image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-mosquitto/mqtt-broker-agemo-config:0.1.2
           imagePullPolicy: IfNotPresent 
