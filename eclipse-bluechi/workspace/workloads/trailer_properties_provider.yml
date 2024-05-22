@@ -1,0 +1,27 @@
+# /********************************************************************************
+# * Copyright (c) Microsoft Corporation.
+# * Licensed under the Apache License, Version 2.0
+# * SPDX-License-Identifier: Apache-2.0
+# ********************************************************************************/
+---
+apiversion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: trailer-properties-provider
+  name: trailer-properties-provider
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: trailer-properties-provider
+  template:
+    metadata:
+      labels:
+        app: trailer-properties-provider
+    spec:
+      hostNetwork: true
+      containers:
+        - name: trailer-properties-provider
+          image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/trailer-properties-provider:0.1.0
+          imagePullPolicy: IfNotPresent 
