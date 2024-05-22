@@ -49,7 +49,9 @@ EXPECTED_OPERATION="get"
 # Call FindById in a loop until something is returned
 while true; do
   STATUS=0
-  OUTPUT=$(grpcurl -import-path $PROTO_PATH -proto $PROTO -plaintext -d "$BODY" $IBEJI_SERVER $IBEJI_INVEHICLE_DT_SERVICE/$METHOD 2>&1) || STATUS=$?
+  COM="grpcurl -import-path $PROTO_PATH -proto $PROTO -plaintext -d "$BODY" $IBEJI_SERVER $IBEJI_INVEHICLE_DT_SERVICE/$METHOD 2>&1"
+  echo "$COM"
+  #OUTPUT=$(COM) || STATUS=$?
 
   # Check if the output contains entityAccessInfo (the response from Ibeji when a provider is found)
   if echo "$OUTPUT" | grep -iq "EntityAccessInfo"
