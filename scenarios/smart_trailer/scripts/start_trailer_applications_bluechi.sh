@@ -88,7 +88,7 @@ do
         systemctl start smart_trailer_application
 
         echo "Called systemctl to start the Trailer Properties Digital Twin Provider and Smart Trailer Application"
-        echo "Check systemctl status with 'systemctl status trailer-properties' and 'systemctl status smart-trailer' for status"
+        echo "Check systemctl status with 'systemctl status trailer_properties_provider' and 'systemctl status smart_trailer_application' for status"
         rm "${PROTO_PATH}/${PROTO}"
         exit 0
       fi
