@@ -12,7 +12,9 @@
 # ********************************************************************************/
 FROM quay.io/centos-sig-automotive/autosd:latest
 
-ARG GRPCURL_URL=https://github.com/fullstorydev/grpcurl/releases/download/v1.8.7/grpcurl_1.8.7_linux_$(arch).tar.gz
+ARG TARGETARCH
+
+ARG GRPCURL_URL=https://github.com/fullstorydev/grpcurl/releases/download/v1.8.7/grpcurl_1.8.7_linux_${TARGETARCH}.tar.gz
 
 RUN mkdir /usr/bin/grpcurl.d && \
 curl -sSL ${GRPCURL_URL} | tar -xvz --directory /usr/bin/grpcurl.d && \
