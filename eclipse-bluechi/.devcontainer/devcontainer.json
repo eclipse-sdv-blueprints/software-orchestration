@@ -1,0 +1,11 @@
+{
+    "name": "esdv-autosd-devcontainer",
+    "privileged": true,
+    "image": "quay.io/centos-sig-automotive/autosd:latest",
+    "overrideCommand": false,
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/src/,type=bind",
+    "workspaceFolder": "/workspace/src/",
+    "mounts": [
+        "source=./workspace/workloads,target=/etc/containers/systemd,type=bind"
+    ]
+}

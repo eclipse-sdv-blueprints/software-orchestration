@@ -1,0 +1,14 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the Apache License, Version 2.0.
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+name = "digital-twin-providers-common"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[dependencies]
+invehicle-stack-interfaces = { workspace = true }
+log =  { workspace = true }
+tonic =  { workspace = true }

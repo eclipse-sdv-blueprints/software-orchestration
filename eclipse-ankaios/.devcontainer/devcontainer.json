@@ -8,7 +8,9 @@
 		//	"TARGETARCH": "" // comment out and set your targetarch if no buildx is available
 		//}
     },
-   "mounts": [],
+   "mounts": [
+	    "source=${localWorkspaceFolder}/../scenarios/smart_trailer/scripts,target=/workspaces/blueprint/smart_trailer/scripts,type=bind"
+   ],
    "runArgs": [
 	"--privileged"
    ],

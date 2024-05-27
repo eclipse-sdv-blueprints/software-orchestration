@@ -1,0 +1,15 @@
+{
+  "name": "Software Orchestration",
+  "version": "0.1.0",
+  "description": "The Software Orchestration Blueprint showcases how an example in-vehicle software architecture with connectivity to the cloud can help integrators and developers manage complex services and applications.",
+  "participatingProjects": [
+    {"id": "automotive.agemo"},
+    {"id": "automotive.ankaios"},
+    {"id": "automotive.bluechi"},
+    {"id": "automotive.chariott"},
+    {"id": "automotive.freyja"},
+    {"id": "automotive.ibeji"},
+    { "id": "automotive.kuksa" },
+    { "id": "iot.mosquitto" }
+  ]
+}
