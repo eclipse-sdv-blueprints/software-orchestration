@@ -9,7 +9,7 @@
 		//}
     },
    "mounts": [
-	    "source=${localWorkspaceFolder}/../scenarios/smart_trailer/scripts,target=/workspaces/blueprint/smart_trailer/scripts,type=bind"
+	    "source=${localWorkspaceFolder}/../scenarios/smart_trailer/scripts,target=/workspaces/software-orchestration/smart_trailer/scripts,type=bind"
    ],
    "runArgs": [
 	"--privileged"
