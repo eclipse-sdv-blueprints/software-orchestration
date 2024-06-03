@@ -53,6 +53,8 @@ workloads:
     dependencies:
       service_discovery:
         ADD_COND_RUNNING
+      digital_twin_vehicle:
+        ADD_COND_RUNNING
     tags:
       - key: project
         value: freyja
