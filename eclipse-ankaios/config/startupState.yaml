@@ -41,6 +41,8 @@ workloads:
     dependencies:
       service_discovery:
         ADD_COND_RUNNING
+      dynamic_topic_management:
+        ADD_COND_RUNNING 
     tags:
       - key: project
         value: ibeji
