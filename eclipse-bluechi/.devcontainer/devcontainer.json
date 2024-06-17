@@ -1,7 +1,9 @@
 {
     "name": "esdv-autosd-devcontainer",
     "privileged": true,
-    "image": "quay.io/centos-sig-automotive/autosd:latest",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
     "overrideCommand": false,
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/src/,type=bind",
     "workspaceFolder": "/workspace/src/",
