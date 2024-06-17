@@ -1,0 +1,22 @@
+---
+apiversion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: trailer-connected-provider
+  name: trailer-connected-provider
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: trailer-connected-provider
+  template:
+    metadata:
+      labels:
+        app: trailer-connected-provider
+    spec:
+      hostNetwork: true
+      containers:
+        - name: trailer-connected-provider
+          image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/trailer-connected-provider:0.1.0
+          imagePullPolicy: IfNotPresent 

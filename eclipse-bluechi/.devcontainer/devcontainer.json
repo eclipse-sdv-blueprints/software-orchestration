@@ -8,6 +8,7 @@
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/src/,type=bind",
     "workspaceFolder": "/workspace/src/",
     "mounts": [
-        "source=./workspace/workloads,target=/etc/containers/systemd,type=bind"
+        "source=./workspace/workloads,target=/etc/containers/systemd,type=bind",
+        "source=./../scenarios/smart_trailer/scripts,target=/workspace/src/smart_trailer/scripts,type=bind"
     ]
 }

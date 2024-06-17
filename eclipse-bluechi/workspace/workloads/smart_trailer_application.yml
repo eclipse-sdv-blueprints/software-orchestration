@@ -1,0 +1,27 @@
+# /********************************************************************************
+# * Copyright (c) Microsoft Corporation.
+# * Licensed under the Apache License, Version 2.0
+# * SPDX-License-Identifier: Apache-2.0
+# ********************************************************************************/
+---
+apiversion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: smart-trailer-application
+  name: smart-trailer-application
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: smart-trailer-application
+  template:
+    metadata:
+      labels:
+        app: smart-trailer-application
+    spec:
+      hostNetwork: true
+      containers:
+        - name: smart-trailer-application
+          image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/smart-trailer-application:0.1.0
+          imagePullPolicy: IfNotPresent 

@@ -84,11 +84,11 @@ do
         # The service.kube and service.yml files for these two services are included in the BlueChi devcontainer
         # See /etc/containers/systemd for these files
         # Start up the other workloads using systemctl
-        systemctl start trailer-properties
-        systemctl start smart-trailer
+        systemctl start trailer_properties_provider
+        systemctl start smart_trailer_application
 
         echo "Called systemctl to start the Trailer Properties Digital Twin Provider and Smart Trailer Application"
-        echo "Check systemctl status with 'systemctl status trailer-properties' and 'systemctl status smart-trailer' for status"
+        echo "Check systemctl status with 'systemctl status trailer_properties_provider' and 'systemctl status smart_trailer_application' for status"
         rm "${PROTO_PATH}/${PROTO}"
         exit 0
       fi

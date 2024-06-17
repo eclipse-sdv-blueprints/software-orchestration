@@ -1,5 +1,6 @@
   # /********************************************************************************
 # * Copyright (c) 2024 Leonardo Rossetti <lrossett@redhat.com>
+# * Portions Copyright (c) Microsoft Corporation.
 # *
 # * This program and the accompanying materials are made available under the 2
 # * terms of the Apache License 2.0 which is available at
@@ -30,5 +31,5 @@ spec:
       hostNetwork: true
       containers:
         - name: pub-sub-service
-          image: ghcr.io/ladatz/sdvblueprint/eclipse-agemo/pub-sub-service:0.1.1
+          image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-agemo/pub-sub-service:0.1.2
           imagePullPolicy: IfNotPresent
