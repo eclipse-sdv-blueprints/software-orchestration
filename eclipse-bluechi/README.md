@@ -77,6 +77,7 @@ Start the blueprint container by running:
 
 ```sh
 docker run \
+--privileged \
 --replace \
 --name esdv \
 -d \
@@ -89,7 +90,7 @@ quay.io/centos-sig-automotive/autosd:latest
 The container will be running in the background and you can enter into it by running:
 
 ```sh
-docker exect -it esdv /bin/bash
+docker exec -it esdv /bin/bash
 ```
 
 Enter into the devcontainer and interact with BlueChi:
