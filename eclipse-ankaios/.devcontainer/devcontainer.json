@@ -9,7 +9,7 @@
 		//}
     },
    "mounts": [
-	    "source=${localWorkspaceFolder}/../scenarios/smart_trailer/scripts,target=/workspaces/software-orchestration/smart_trailer/scripts,type=bind"
+	    "source=${localWorkspaceFolder}/../scenarios/smart_trailer/scripts/start_trailer_applications_ankaios.sh,target=/usr/local/bin/start_trailer_applications.sh,type=bind"
    ],
    "runArgs": [
 	"--privileged"
