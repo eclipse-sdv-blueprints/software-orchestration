@@ -106,11 +106,23 @@ The output looks similar to the following:
 start_trailer_applications.sh
 ```
 
-5. Use the `ank get workloads` command again to verify that the new smart trailer applications are running:
+5. In another terminal window inside the devcontainer, add the following workload by using the Ankaios CLI to simulate the Smart Trailer connected signal:
+        ```shell
+        ank run workload trailer_connected_provider --runtime podman --config $'image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/trailer-connected-provider:0.1.0\ncommandOptions: ["--network", "host", "--name", "trailer_connected_provider"]' --agent agent_A
+        ```
+
+6. Verify the output of the terminal window of the `start_trailer_applications_ankaios.sh` script. The output should look like the following:
+        ```shell
+        Trailer is connected! Starting workloads to manage it
+        Called Ankaios to start the Trailer Properties Digital Twin Provider and Smart Trailer Application
+        Check Ankaios status with 'ank get workloads'
+        ```
+
+7. Use the `ank get workloads` command again to verify that the new smart trailer applications are running:
 - `trailer_properties_provider`, providing the smart trailer's dummy weight property
 - `smart_trailer_application`, the smart trailer application reading the smart trailer's dummy weight property
 
-6. Verify the logs of the smart trailer app and the smart trailer provider using the trailer's weight property:
+8. Verify the logs of the smart trailer app and the smart trailer provider using the trailer's weight property:
 
 Logs of the `trailer_properties_provider`:
 ```shell
@@ -122,12 +134,12 @@ Logs of the `smart_trailer_application`:
 podman logs -f smart_trailer_application
 ```
 
-7. Verify the logs of the `local-cloud-sync` workload emitting the trailer weight to the cloud (currently to the mock cloud adapter):
+9. Verify the logs of the `local-cloud-sync` workload emitting the trailer weight to the cloud (currently to the mock cloud adapter):
 ```shell
 podman logs -f local-cloud-sync
 ```
 
-8. Stop Ankaios and clean up all workloads by pressing `Ctrl+C` inside the terminal window of `run_blueprint.sh`.
+10. Stop Ankaios and clean up all workloads by pressing `Ctrl+C` inside the terminal window of `run_blueprint.sh`.
 
 ## Workload development
 
