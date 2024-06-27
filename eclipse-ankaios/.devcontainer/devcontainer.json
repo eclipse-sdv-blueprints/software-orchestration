@@ -3,10 +3,13 @@
 {
     "name": "Ankaios Software Orchestration Blueprint dev container",
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+		//"args": {
+		//	"TARGETARCH": "" // comment out and set your targetarch if no buildx is available
+		//}
     },
    "mounts": [
-	    "source=${localWorkspaceFolder}/../scenarios/smart_trailer/scripts,target=/workspaces/blueprint/smart_trailer/scripts,type=bind"
+	    "source=${localWorkspaceFolder}/../scenarios/smart_trailer/scripts/start_trailer_applications_ankaios.sh,target=/usr/local/bin/start_trailer_applications.sh,type=bind"
    ],
    "runArgs": [
 	"--privileged"
@@ -28,6 +31,6 @@
 			]
 		}
 	},
-   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/blueprint/,type=bind",
-   "workspaceFolder": "/workspaces/blueprint/"
+   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/software-orchestration/,type=bind",
+   "workspaceFolder": "/workspaces/software-orchestration/"
 }

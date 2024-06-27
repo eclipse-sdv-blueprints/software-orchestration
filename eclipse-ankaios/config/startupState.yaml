@@ -1,3 +1,4 @@
+apiVersion: v0.1
 workloads:
   service_discovery:
     runtime: podman
@@ -6,52 +7,59 @@ workloads:
       - key: project
         value: chariott
     runtimeConfig: |
-      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-chariott/service-discovery:0.1.1
+      image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:0.2.1
       commandOptions: ["--network", "host", "--name", "service_discovery"]
   mqtt_broker:
     runtime: podman
     agent: agent_A
+    dependencies:
+      service_discovery:
+        ADD_COND_RUNNING
     tags:
       - key: project
         value: agemo
     runtimeConfig: |
-      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-mosquitto/mqtt-broker:latest
+      image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-mosquitto/mqtt-broker-agemo-config:0.1.2
       commandOptions: ["--network", "host", "--name", "mqtt-broker"]
   dynamic_topic_management:
     runtime: podman
     agent: agent_A
+    dependencies:
+      service_discovery:
+        ADD_COND_RUNNING
+      mqtt_broker:
+        ADD_COND_RUNNING
     tags:
       - key: project
         value: agemo
     runtimeConfig: |
-      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-agemo/pub-sub-service:0.1.0
+      image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-agemo/pub-sub-service:0.1.2
       commandOptions: ["--network", "host", "--name", "pub-sub-service"]
   digital_twin_vehicle:
     runtime: podman
     agent: agent_A
+    dependencies:
+      service_discovery:
+        ADD_COND_RUNNING
+      dynamic_topic_management:
+        ADD_COND_RUNNING 
     tags:
       - key: project
         value: ibeji
     runtimeConfig: |
-      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-ibeji/invehicle-digital-twin:0.1.0
+      image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.1
       commandOptions: ["--network", "host", "--name", "invehicle-digital-twin"]
   digital_twin_cloud_sync:
     runtime: podman
     agent: agent_A
+    dependencies:
+      service_discovery:
+        ADD_COND_RUNNING
+      digital_twin_vehicle:
+        ADD_COND_RUNNING
     tags:
       - key: project
         value: freyja
     runtimeConfig: |
-      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-freyja/local-with-ibeji:0.1.0
+      image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-freyja/local-with-ibeji:0.1.0
       commandOptions: ["--network", "host", "--name", "local-cloud-sync"]
-  cloud_connector:
-    runtime: podman
-    agent: agent_A
-    restart: true
-    updateStrategy: AT_MOST_ONCE
-    accessRights:
-      allow: []
-      deny: []
-    runtimeConfig: |
-      image: sdvblueprint.azurecr.io/sdvblueprint/eclipse-freyja/azure-cloud-connector:0.1.0
-      commandOptions: ["--network", "host", "--name", "cloud-connector", "--mount", "type=bind,src=/etc/freyja/config,dst=/mnt/config,ro=true"]
