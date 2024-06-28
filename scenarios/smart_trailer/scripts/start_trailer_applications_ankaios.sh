@@ -6,6 +6,22 @@
 
 set -eu
 
+DEBUG_LOG_ENABLED=0
+# optarg with enabling debug log output
+while getopts ":d" opt; do
+  case ${opt} in
+    d )
+      DEBUG_LOG_ENABLED=1
+      ;;
+    \? )
+      echo "Usage: start_trailer_applications_ankaios.sh [-d]"
+      echo "Options:"
+      echo "  -d  Enable debug log output"
+      exit 1
+      ;;
+  esac
+done
+
 # This script requires jq and grpcurl to be installed
 # These are included in the ankaios devcontainer, but if you want to run it outside
 # you could add the commands to install them here
@@ -41,10 +57,32 @@ BODY='{"id":"dtmi:sdv:Trailer:IsTrailerConnected;1"}'
 PROTO_URL="https://github.com/eclipse-ibeji/ibeji/releases/download/0.1.1/invehicle_digital_twin.proto"
 PROTO_PATH="${SCRIPT_DIR}"
 PROTO="invehicle_digital_twin.proto"
-curl -L "${PROTO_URL}" -o "${PROTO_PATH}/${PROTO}"
+curl -sL "${PROTO_URL}" -o "${PROTO_PATH}/${PROTO}"
+
+if [ $? -ne 0 ]; then
+  echo "Failed to download the invehicle-digital twin proto file."
+  exit 1
+fi
 
 EXPECTED_PROTOCOL="grpc"
 EXPECTED_OPERATION="get"
+
+trap 'cleanup_routine' EXIT SIGTERM SIGQUIT SIGKILL
+
+cleanup_routine() {
+  rm "${PROTO_PATH}/${PROTO}"
+}
+
+log_info() {
+  echo -e "[$(date -u +"%Y-%m-%dT%H:%M:%SZ") INFO]    $1"
+}
+
+log_debug() {
+  if [ $DEBUG_LOG_ENABLED = 1 ]; then
+    echo -e "[$(date -u +"%Y-%m-%dT%H:%M:%SZ") DEBUG]    $1"
+  fi
+}
+
 
 # Call FindById in a loop until something is returned
 while true; do
@@ -54,12 +92,12 @@ while true; do
   # Check if the output contains entityAccessInfo (the response from Ibeji when a provider is found)
   if echo "$OUTPUT" | grep -iq "EntityAccessInfo"
   then
-    echo "The FindById call was successful. Output:"
-    echo "$OUTPUT"
+    log_debug "The FindById call was successful. Output:\n$OUTPUT"
+    log_info "Trailer successfully connected to the vehicle!"
     break
   else
-    echo "Provider not found. Status Code '$STATUS' Error '$OUTPUT'"
-    echo "The trailer is not connected. Retrying..."
+    log_debug "Provider not found. Status Code '$STATUS' Error '$OUTPUT'\nThe trailer is not connected. Retrying..."
+    log_info "Waiting for the trailer to connect. Connect the trailer by starting the following workload with the Ank CLI:\nank run workload trailer_connected_provider --runtime podman --config $'image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/trailer-connected-provider:0.1.0\\\ncommandOptions: ["--network", "host", "--name", "trailer_connected_provider"]' --agent agent_A\n"
     sleep 5 
   fi
 done
@@ -79,7 +117,7 @@ do
     do
       if [[ $(echo $OPERATION | tr '[:upper:]' '[:lower:]') == $EXPECTED_OPERATION ]]
       then
-        echo "Trailer is connected! Starting workloads to manage it"
+        log_info "Starting trailer applications to manage the trailer!"
 
         # Start up the other workloads using podman
         CFG_PROVIDER=$'image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/invehicle-stack/trailer-properties-provider:0.1.0\ncommandOptions: ["--network", "host", "--name", "trailer_properties_provider"]'
@@ -88,14 +126,12 @@ do
         ank run workload trailer_properties_provider --runtime podman --config "$CFG_PROVIDER" --agent agent_A
         ank run workload smart_trailer_application --runtime podman --config "$CFG_APP" --agent agent_A
 
-        echo "Called Ankaios to start the Trailer Properties Digital Twin Provider and Smart Trailer Application"
-        echo "Check Ankaios status with 'ank get workloads'"
-        rm "${PROTO_PATH}/${PROTO}"
+        log_debug "Called Ankaios to start the Trailer Properties Digital Twin Provider and Smart Trailer Application"
+        log_debug "Check Ankaios status with 'ank get workloads'"
         exit 0
       fi
     done
   fi
 done
 # We didn't find an endpoint which satisfied our conditions
-rm "${PROTO_PATH}/${PROTO}"
 exit 1
