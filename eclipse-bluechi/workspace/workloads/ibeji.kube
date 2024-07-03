@@ -16,5 +16,8 @@
 Yaml=ibeji.yml
 
 # Commented to disable the service to automatically start
-# [Install]
-# WantedBy=default.target
+[Install]
+WantedBy=default.target
+
+[Unit]
+Wants=chariott.service agemo.service

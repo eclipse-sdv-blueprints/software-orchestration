@@ -16,5 +16,5 @@
 Yaml=mosquitto.yml
 
 # Commented to disable the service to automatically start
-# [Install]
-# WantedBy=default.target
+[Install]
+WantedBy=default.target
