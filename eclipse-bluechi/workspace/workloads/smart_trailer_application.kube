@@ -11,3 +11,6 @@ Yaml=smart_trailer_application.yml
 # Commented to disable the service to automatically start
 [Install]
 WantedBy=default.target
+
+[Unit]
+Wants=ibeji.service
