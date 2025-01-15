@@ -10,8 +10,8 @@ The container is designed to have an immediately running environment. Once trigg
 
 ## Links
 
-- [Ankaios docs](https://eclipse-ankaios.github.io/ankaios/0.3/)
-- [Ankaios quickstart](https://eclipse-ankaios.github.io/ankaios/0.3/usage/quickstart/)
+- [Ankaios docs](https://eclipse-ankaios.github.io/ankaios/0.5/)
+- [Ankaios quickstart](https://eclipse-ankaios.github.io/ankaios/0.5/usage/quickstart/)
 - [Podman](https://docs.podman.io/en/v4.6.1/)
 - [What are devcontainers?](https://containers.dev/)
 
@@ -71,7 +71,7 @@ __Note:__ If you have not installed and enabled [docker buildx](https://github.c
 Start the devcontainer with the required mount points by replacing the file paths in the run command below with the full absolute file paths on your local machine:
 
 ```shell
-docker run -it --privileged -p 25551:25551 --name ankaios_orchestration --workdir /workspaces/software-orchestration -v /<absolute-path-to>/software-orchestration/eclipse-ankaios:/workspaces/software-orchestration -v /<absolute-path-to>/software-orchestration/scenarios/smart_trailer/scripts/start_trailer_applications_ankaios.sh:/usr/local/bin/start_trailer_applications.sh ankaios-orchestration:0.1
+docker run -it --privileged -p 25551:25551 --user ankaios --name ankaios_orchestration --workdir /workspaces/software-orchestration -v /<absolute-path-to>/software-orchestration/eclipse-ankaios:/workspaces/software-orchestration -v /<absolute-path-to>/software-orchestration/scenarios/smart_trailer/scripts/start_trailer_applications_ankaios.sh:/usr/local/bin/start_trailer_applications.sh ankaios-orchestration:0.1
 ```
 
 ## Run the smart trailer scenario
@@ -82,6 +82,8 @@ Start the smart trailer scenario by executing the following steps:
 ```shell
 run_blueprint.sh
 ```
+
+Note: The Ankaios cluster will start in an insecure mode defined by the env variables in the `.bashrc` file inside the container. As an exercise, try modifying run_blueprint.sh to start Ankaios with mTLS enabled. See the Ankaios documentation [Setting up Ankaios with mTLS](https://eclipse-ankaios.github.io/ankaios/0.5/usage/mtls-setup/) for more information.
 
 2. Next, open a new terminal window and use the Ankaios CLI to verify that all initial workloads are up and running:
 
@@ -173,13 +175,13 @@ Rebuild the container image.
 
 ### Ankaios Control Interface dependencies
 
-The devcontainer includes also dependencies for developing applications using the [Ankaios Control Interface](https://eclipse-ankaios.github.io/ankaios/0.3/reference/control-interface/):
+The devcontainer includes also dependencies for developing applications using the [Ankaios Control Interface](https://eclipse-ankaios.github.io/ankaios/0.5/reference/control-interface/):
 
 - protobuf compiler
 - grpcurl
 - Ankaios protobuf file (under `/usr/local/lib/ankaios/ankaios.proto`)
 
-Those dependencies are needed for use-cases in which your app needs to use the [Ankaios Control Interface](https://eclipse-ankaios.github.io/ankaios/0.3/reference/control-interface/) to be able to communicate with the Ankaios cluster via the API. An example use-case would be to write a workload that shall request Ankaios to dynamically start another workload. You can find example workload applications written in various programming languages inside the Eclipse Ankaios repository [here](https://github.com/eclipse-ankaios/ankaios/tree/v0.3.1/examples).
+Those dependencies are needed for use-cases in which your app needs to use the [Ankaios Control Interface](https://eclipse-ankaios.github.io/ankaios/0.5/reference/control-interface/) to be able to communicate with the Ankaios cluster via the API. An example use-case would be to write a workload that shall request Ankaios to dynamically start another workload. You can find example workload applications written in various programming languages inside the Eclipse Ankaios repository [here](https://github.com/eclipse-ankaios/ankaios/tree/v0.5.0/examples).
 
 ## Debugging
 
@@ -190,11 +192,11 @@ There are log files for debugging purposes of Ankaios server and agent.
 The Ankaios server logs can be viewed by executing the following command:
 
 ```shell
-tail -f /var/log/ankaios-server.log
+tail -f /var/log/ankaios/ankaios-server.log
 ```
 
 The Ankaios agent logs can be viewed by executing the following command:
 
 ```shell
-tail -f /var/log/ankaios-agent_A.log
+tail -f /var/log/ankaios/ankaios-agent_A.log
 ```
