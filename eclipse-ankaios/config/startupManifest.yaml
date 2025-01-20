@@ -3,24 +3,28 @@ workloads:
   service_discovery:
     runtime: podman
     agent: agent_A
+    configs:
+      net: default_network
     tags:
       - key: project
         value: chariott
     runtimeConfig: |
       image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-chariott/service-discovery:0.2.1
-      commandOptions: ["--network", "host", "--name", "service_discovery"]
+      commandOptions: ["--network", "{{ net }}", "--name", "service_discovery"]
   mqtt_broker:
     runtime: podman
     agent: agent_A
     dependencies:
       service_discovery:
         ADD_COND_RUNNING
+    configs:
+      net: default_network
     tags:
       - key: project
         value: agemo
     runtimeConfig: |
       image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-mosquitto/mqtt-broker-agemo-config:0.1.2
-      commandOptions: ["--network", "host", "--name", "mqtt-broker"]
+      commandOptions: ["--network", "{{ net }}", "--name", "mqtt-broker"]
   dynamic_topic_management:
     runtime: podman
     agent: agent_A
@@ -29,12 +33,14 @@ workloads:
         ADD_COND_RUNNING
       mqtt_broker:
         ADD_COND_RUNNING
+    configs:
+      net: default_network
     tags:
       - key: project
         value: agemo
     runtimeConfig: |
       image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-agemo/pub-sub-service:0.1.2
-      commandOptions: ["--network", "host", "--name", "pub-sub-service"]
+      commandOptions: ["--network", "{{ net }}", "--name", "pub-sub-service"]
   digital_twin_vehicle:
     runtime: podman
     agent: agent_A
@@ -42,13 +48,15 @@ workloads:
       service_discovery:
         ADD_COND_RUNNING
       dynamic_topic_management:
-        ADD_COND_RUNNING 
+        ADD_COND_RUNNING
+    configs:
+      net: default_network
     tags:
       - key: project
         value: ibeji
     runtimeConfig: |
       image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-ibeji/invehicle-digital-twin:0.1.1
-      commandOptions: ["--network", "host", "--name", "invehicle-digital-twin"]
+      commandOptions: ["--network", "{{ net }}", "--name", "invehicle-digital-twin"]
   digital_twin_cloud_sync:
     runtime: podman
     agent: agent_A
@@ -57,9 +65,13 @@ workloads:
         ADD_COND_RUNNING
       digital_twin_vehicle:
         ADD_COND_RUNNING
+    configs:
+      net: default_network
     tags:
       - key: project
         value: freyja
     runtimeConfig: |
       image: ghcr.io/eclipse-sdv-blueprints/software-orchestration/eclipse-freyja/local-with-ibeji:0.1.0
-      commandOptions: ["--network", "host", "--name", "local-cloud-sync"]
+      commandOptions: ["--network", "{{ net }}", "--name", "local-cloud-sync"]
+configs:
+  default_network: "host"
